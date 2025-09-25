@@ -32,11 +32,11 @@ const vars = ref(JSON.stringify(variables, null, 2));
             <FaIcon icon="fa-solid fa-copy" />
             Duplicate
           </button>
-          <button type="button" class="btn btn-sm btn-error btn-outline">
+          <button v-if="!useTemplate().template.isGlobal" type="button" class="btn btn-sm btn-error btn-outline">
             <FaIcon icon="fa-solid fa-close" />
             Delete
           </button>
-          <button type="submit" class="btn btn-sm btn-neutral">
+          <button v-if="!useTemplate().template.isGlobal" type="submit" class="btn btn-sm btn-neutral">
             <FaIcon icon="fa-solid fa-save" />
             {{ useTemplate().template.id === "" ? "Create Template" : "Save" }}
           </button>
