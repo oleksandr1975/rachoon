@@ -1,12 +1,3 @@
-<!-- 
-todo: 
-- select client (add client ad-hoc)
-- Discount
-- Show tax/EU-tax/non-EU tax/one-stop-shop
-- reccuring?
-
- -->
-
 <script setup lang="ts">
 useInvoiceOrOffer().form();
 
@@ -31,8 +22,7 @@ definePageMeta({
 });
 
 async function save() {
-  const inv = await useInvoiceOrOffer().save();
-  // useRouter().replace(inv.id.toString());
+  await useInvoiceOrOffer().save();
 }
 
 function preview() {
