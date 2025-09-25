@@ -13,19 +13,6 @@ export default async function useRender(object: any, preview: boolean = false): 
   }
 
   const template = await useTemplate().get(tpl);
-  const html = template.html || ioTemplates.default;
-  const final = nunjucks.renderString(html, {
-    object: object,
-    template: template,
-    organization: useProfile().me.organization,
-    user: useProfile().me,
-    t: t,
-    format: {
-      currency: useFormat.toCurrency,
-      date: useFormat.date,
-      duration: useFormat.minutesToHM,
-    },
-  });
 
   return await useHttp.post(`/api/render${preview ? "?preview=true" : ""}`, {
     templateId: template.id,

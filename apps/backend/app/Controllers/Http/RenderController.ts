@@ -14,22 +14,18 @@ export default class RenderController {
       .orWhere({ id: body.templateId, organizationId: null })
       .firstOrFail()
 
+    const loc = ctx.auth.user!.organization.settings.general.locale
+    const cur = ctx.auth.user!.organization.settings.general.currency
+
     const t = (key: string, ...val: any): string => {
-      return Locale.t(ctx.auth.user!.organization.data.settings.general.locale, key, val)
+      return Locale.t(loc, key, val)
     }
 
-    const currency = (value: any): string =>
-      Format.toCurrency(
-        value,
-        ctx.auth.user!.organization.data.settings.general.locale,
-        ctx.auth.user!.organization.data.settings.general.currency
-      )
+    const currency = (value: any): string => Format.toCurrency(value, loc, cur)
 
-    const date = (value: any): string =>
-      Format.date(value, ctx.auth.user!.organization.data.settings.general.locale)
+    const date = (value: any): string => Format.date(value, loc)
 
-    const longDate = (value: any): string =>
-      Format.longDate(value, ctx.auth.user!.organization.data.settings.general.locale)
+    const longDate = (value: any): string => Format.longDate(value, loc)
 
     const finalHtml = nunjucks.renderString(template.html, {
       object: body.data,
