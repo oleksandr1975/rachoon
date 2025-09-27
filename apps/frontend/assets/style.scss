@@ -265,6 +265,7 @@ input::placeholder {
 }
 
 .menu .router-link-exact-active,
+.menu .active,
 .menu a:focus,
 .menu a:hover {
   @apply text-base-content bg-base-300 #{!important};

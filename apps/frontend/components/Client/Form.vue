@@ -6,7 +6,7 @@ useClient().form();
   <Loading v-if="useClient().loading" />
 
   <form @submit="useClient().save">
-    <FormHeader :title="useClient().client.name" icon="fa-user">
+    <FormHeader :title="useClient().client.name || `${useClient().client.id === null ? 'New' : 'Edit'} Client`" icon="fa-user">
       <template #buttons>
         <button v-if="useClient().client.id !== ''" class="btn btn-sm btn-error gap-2 btn-outline">
           <FaIcon icon="fa-solid fa-close" />

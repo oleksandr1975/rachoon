@@ -8,7 +8,7 @@
             Settings
           </NuxtLink>
         </summary>
-        <ul class="gap-1">
+        <ul class="menu gap-1">
           <li>
             <NuxtLink href="/settings/organization" :class="useRoute().fullPath.includes('/organization') ? 'active' : ''">
               <FaIcon icon="fa-solid fa-building" />

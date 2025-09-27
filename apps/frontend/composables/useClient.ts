@@ -39,7 +39,6 @@ export default defineStore("client", () => {
 
     loading.value = true;
     client.value = new Client();
-    console.log("ID", id);
     if (id === "new") {
       client.value.number = await useApi().number("client").get();
       title.value = client.value.number;
