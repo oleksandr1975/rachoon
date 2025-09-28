@@ -45,9 +45,12 @@ export type DocumentType = {
   number: string;
   status: string;
   offerId: string | null;
+  invoiceId: string | null;
   templateId: string | null;
+  totalReminders: number;
   offer: DocumentType;
   invoices: DocumentType[];
+  overdue: boolean;
   data: {
     title: string;
     positions: Position[];
@@ -77,6 +80,9 @@ class Document implements DocumentType {
   status: string = "pending";
   offerId = null;
   templateId = "";
+  invoiceId = null;
+  totalReminders: 0;
+  overdue: false;
   offer: DocumentType;
   invoices: DocumentType[];
   data = {
@@ -181,10 +187,11 @@ class Document implements DocumentType {
     });
     this.data.netNoDiscount = sumPositionsNoDiscount;
     let sumDiscountsCharges = 0;
-
     this.data.discountsCharges.forEach((dc) => {
       const v =
-        dc.valueType === "percent" ? (sumPositions / 100) * dc.value : dc.value;
+        dc.valueType === "percent"
+          ? (sumPositions / 100) * dc.value
+          : Number(dc.value);
 
       dc.amount = v;
       if (dc.title != "" && dc.value > 0) {

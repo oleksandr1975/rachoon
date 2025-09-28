@@ -5,7 +5,7 @@ import NumberService from 'App/Services/Number'
 
 export default class DocumentsController {
   public async index(ctx: HttpContextContract) {
-    if (!['invoice', 'offer'].includes(ctx.request.qs()['type'])) {
+    if (!['invoice', 'offer', 'reminder'].includes(ctx.request.qs()['type'])) {
       return ctx.response.badRequest('Type must be invoice or offer')
     }
 
@@ -29,6 +29,7 @@ export default class DocumentsController {
       .preload('client')
       .preload('offer')
       .preload('invoices')
+      .withCount('reminders', (query) => query.as('totalReminders'))
       .withScopes((scopes) => scopes.sortBy(ctx, Document.$columnsDefinitions))
       .withScopes((scopes) => scopes.filterBy(ctx, Document.$columnsDefinitions))
       .paginate(ctx.request.qs()['page'] || 1, ctx.request.qs()['perPage'] || 20)

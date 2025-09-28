@@ -11,6 +11,7 @@ class DocumentStore extends Base<Document> {
   templates = ref<Template[]>([]);
   mustSave = ref(-1);
   offerToConvert = ref(new Document());
+  reminderInvoice = ref(new Document());
   parentList = this.list;
 
   setTemplate = (id: string) => {
@@ -60,6 +61,7 @@ class DocumentStore extends Base<Document> {
     // super.save();
     const isNew = this.item.value!.id === "";
     const ioo = await useApi().documents(this.singularType()).saveOrUpdate(this.item.value!, !isNew);
+    console.log(ioo);
     if (isNew) {
       useRouter().replace(`/${this.type()}/${ioo.id}`);
     }
@@ -91,6 +93,41 @@ class DocumentStore extends Base<Document> {
     this.loading.value = false;
   };
 
+  handleReminder = async () => {
+    this.reminderInvoice.value = await useApi()
+      .documents("invoice")
+      .get(useRoute().query.invoice as string);
+    this.item.value.data.positions[0] = {
+      net: this.reminderInvoice.value.data.total,
+      tax: 0,
+      text: "",
+      unit: "",
+      price: this.reminderInvoice.value.data.total,
+      title: this.reminderInvoice.value.number,
+      total: this.reminderInvoice.value.data.total,
+      quantity: 1,
+      totalPercentage: 100,
+    };
+    if (useSettings().settings.reminders.fees.length > 0) {
+      for (const fee of useSettings().settings.reminders.fees) {
+        this.item.value.data.discountsCharges.push(fee);
+      }
+    } else {
+      this.item.value.data.discountsCharges.push({
+        title: "Reminder fee",
+        value: 5,
+        type: "charge",
+        valueType: "fixed",
+        amount: 0,
+      });
+    }
+    this.item.value.clientId = this.reminderInvoice.value.clientId;
+    this.item.value.client = this.reminderInvoice.value.client;
+    this.item.value.invoiceId = this.reminderInvoice.value.id;
+    this.item.value.data.taxOption = {};
+    this.item.value.calculate();
+  };
+
   form = async () => {
     this.loading.value = true;
     this.clients.value = (await useApi().clients().getAll()).rows;
@@ -100,12 +137,16 @@ class DocumentStore extends Base<Document> {
     this.item.value = new Document();
     if (id === "new") {
       this.item.value.number = await useApi().number(this.singularType()).get();
-
       this.item.value.data.dueDate = dateFns.add(this.item.value.data.date, {
-        days: useProfile().me.organization.settings.invoices.dueDays,
+        days: useProfile().me.organization.settings[this.type()].dueDays,
       });
       this.item.value.data.dueDays = dateFns.differenceInCalendarDays(this.item.value.data.dueDate, this.item.value.data.date);
-      await this.maybeDoConvertOffer();
+
+      if (this.type() === "reminders") {
+        this.handleReminder();
+      } else {
+        await this.maybeDoConvertOffer();
+      }
     } else {
       this.item.value = _.mergeWith(this.item.value, await useApi().documents(this.singularType()).get(id));
     }

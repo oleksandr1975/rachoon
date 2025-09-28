@@ -43,9 +43,9 @@
           </li>
 
           <li>
-            <NuxtLink href="/settings/invoices-offers" :class="useRoute().fullPath.includes('/formats') ? 'active' : ''">
+            <NuxtLink href="/settings/documents" :class="useRoute().fullPath.includes('/formats') ? 'active' : ''">
               <FaIcon icon="fa-solid fa-file-invoice" />
-              Invoices & Offers
+              Documents
             </NuxtLink>
           </li>
         </ul>

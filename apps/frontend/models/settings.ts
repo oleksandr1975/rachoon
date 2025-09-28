@@ -1,5 +1,5 @@
 import * as dateFns from "date-fns";
-import { TaxOption, TaxRate } from "./document";
+import type { DiscountCharge, TaxOption, TaxRate } from "./document";
 import _ from "lodash";
 interface SettingsData {
   general: {
@@ -25,7 +25,6 @@ interface SettingsData {
   invoices: {
     number: {
       format: String;
-      start: number;
       padZeros: number;
     };
     dueDays: number;
@@ -37,6 +36,15 @@ interface SettingsData {
     };
     dueDays: number;
   };
+  reminders: {
+    number: {
+      format: String;
+      padZeros: number;
+    };
+    fees: DiscountCharge[];
+    dueDays: number;
+  };
+
   clients: {
     number: {
       format: String;
@@ -85,6 +93,16 @@ class Settings implements SettingsData {
     },
     dueDays: 30,
   };
+  reminders = {
+    title: "Reminder",
+    number: {
+      format: "REM-{number}{date:yyMMdd}",
+      padZeros: 3,
+    },
+    fees: [],
+    dueDays: 30,
+  };
+
   clients = {
     number: {
       format: "CLI-{number}{date:yyMMdd}",
@@ -136,6 +154,10 @@ class Settings implements SettingsData {
   public removeUnit(index: number) {
     this.units.splice(index, 1);
   }
+
+  public removeFee(index: number) {
+    this.reminders.fees.splice(index, 1);
+  }
   public removeTaxOption(index: number) {
     this.taxes.options.splice(index, 1);
   }
@@ -145,24 +167,17 @@ class Settings implements SettingsData {
   public addUnit() {
     this.units.push({ title: "", default: false });
   }
+
+  public addFee() {
+    this.reminders.fees.push({
+      title: "Reminder fee",
+      value: 0,
+      type: "charge",
+      valueType: "fixed",
+    });
+  }
   public addTaxOption() {
     this.taxes.options.push({ title: "", default: false, applicable: true });
-  }
-  public numberFormat(entity: string, add: number = 0) {
-    const number = String(Number(this[entity].number.start) + add).padStart(this[entity].number.padZeros, "0");
-
-    let final = this[entity].number.format.replaceAll("{number}", number);
-    const d = final.match(/\{date:[a-zA-Z_\-\.]+\}/);
-    if (d) {
-      const format = d[0].replace("{date:", "").replace("}", "");
-      try {
-        const date = dateFns.format(new Date(), format);
-        final = final.replace(d[0], date);
-      } catch (e) {
-        final = final.replace(d[0], "INVALID-DATEFORMAT");
-      }
-    }
-    return final;
   }
   public toJSON() {
     return { ...this };

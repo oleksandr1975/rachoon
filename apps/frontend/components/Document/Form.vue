@@ -31,7 +31,7 @@ async function save() {
   <Loading v-if="controller().loading" />
 
   <div v-else>
-    <FormHeader :title="`Invoice`" icon="fa-file-invoice-dollar">
+    <FormHeader :title="`${controller().singularType(true)}`" icon="fa-file-invoice-dollar">
       <template #buttons>
         <select class="select select-bordered select-sm bg-base-300 max-w-56" v-model="controller().item.templateId">
           <option value="" key="default">Default Template</option>
@@ -53,6 +53,10 @@ async function save() {
           <FaIcon icon="fa-solid fa-copy " />
         </button>
 
+        <NuxtLink :to="`/reminders/new?invoice=${controller().item.id}`" class="btn btn-sm btn-neutral">
+          <FaIcon icon="fa-solid fa-bell" />
+        </NuxtLink>
+
         <button class="btn btn-sm btn-error gap-2 btn-outline" v-if="controller().item.id !== ''" @click="controller().del()">
           <FaIcon icon="fa-solid fa-close" />
           Delete
@@ -73,19 +77,19 @@ async function save() {
       </label>
     </div>
 
-    <ul v-if="controller().hasErrors" class="border-2 border-warning rounded p-5 mt-5 mb-10 mx-5">
+    <ul v-if="controller().hasErrors" class="border-1 border-warning rounded p-5 mt-5 mb-10 mx-5">
       <li v-for="e in controller().item.errors()" class="text-warning">
         {{ e }}
       </li>
     </ul>
 
     <div class="flex flex-row px-5 mb-5">
-      <div class="w-1/3 px-5 py-3 rounded-md bg-base-300">
-        <div v-if="useRoute().params['id'] === 'new'">
+      <div class="flex w-1/3 px-5 py-3">
+        <div v-if="useRoute().params['id'] === 'new' && controller().type() !== 'reminders'">
           <label class="label">
             <span class="label-text">Select a client</span>
           </label>
-          <DocumentClientAutoComplete required />
+          <DocumentClientAutoComplete required v-if="controller().type() !== 'reminders'" />
         </div>
 
         <div class="prose text-sm" v-if="controller().item.client">
@@ -102,8 +106,17 @@ async function save() {
           </p>
         </div>
       </div>
-      <div class="flex w-1/3"></div>
-      <div class="flex w-1/3 flex-row justify-end">
+      <div class="flex flex-grow">
+        <div class="w-full prose text-center pt-3" v-if="controller().item.overdue">
+          <h2 class="m-0 p-0 text-error">Invoice overdue!</h2>
+          <p>You should create a reminder.</p>
+          <NuxtLink class="btn btn-sm btn-neutral gap-2 no-underline" :to="`/reminders/new?invoice=${controller().item.id}`">
+            <FaIcon icon="fa-solid fa-bell" />
+            Create reminder
+          </NuxtLink>
+        </div>
+      </div>
+      <div class="flex w-1/3 justify-end">
         <div class="">
           <div class="prose">
             <h2 v-if="controller().offerToConvert.id !== ''" class="mt-0 !text-error">
@@ -128,6 +141,7 @@ async function save() {
         </div>
       </div>
     </div>
+
     <div class="alert px-5 text-error" v-if="controller().item.disabled()">
       <FaIcon icon="fa-solid fa-triangle-exclamation" />
       <p>
@@ -140,7 +154,7 @@ async function save() {
     <div class="flex flex-row gap-5 px-10">
       <div class="basis-2/4"></div>
       <div class="basis-1/4">
-        <DocumentOptions />
+        <DocumentOptions v-if="controller().type() !== 'reminders'" />
       </div>
 
       <div class="basis-1/4">

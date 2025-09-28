@@ -88,6 +88,6 @@ controller().list();
   </div>
   <div class="mt-10 gap-2 flex justify-center" v-if="controller().hasMore()">
     <span :class="`loading loading-spinner loading-xs ${controller().loading ? '' : 'opacity-0'}`"></span>
-    <button @click="controller().loadMore()" class="btn btn-xs btn-neutral inline-block">Load more</button>
+    <button @click="controller().doLoadMore()" class="btn btn-xs btn-neutral inline-block">Load more</button>
   </div>
 </template>

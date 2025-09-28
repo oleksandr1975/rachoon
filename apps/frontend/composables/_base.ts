@@ -31,7 +31,7 @@ export default class Base<T extends IBase> {
   pages = ref(0);
   loading = ref(false);
   perPage = ref(20);
-  singularType = () => this.type().slice(0, this.type().length - 1);
+  singularType = (firstToUpper: boolean = false) => this.type(firstToUpper).slice(0, this.type(firstToUpper).length - 1);
 
   async filter(key: string, operator: string, value: string) {
     if (!this.filterKeys.value[key]) {
@@ -79,6 +79,7 @@ export default class Base<T extends IBase> {
       this.items.value = res.rows as T[];
     }
     this.loading.value = false;
+    this.loadMore.value = false;
   };
 
   hasMore = () => {
@@ -87,6 +88,7 @@ export default class Base<T extends IBase> {
 
   doLoadMore = () => {
     if (this.hasMore()) {
+      this.loadMore.value = true;
       this.page.value++;
       this.list();
     }

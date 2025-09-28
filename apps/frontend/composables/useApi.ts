@@ -130,11 +130,13 @@ export default function useApi() {
             });
             return document;
           } else {
-            return (await useHttp.post(`${endpoint}?type=${type}`, document, {
-              title: document.number,
-              text: `${type} saved successfully`,
-              type: "success",
-            })) as DocumentType;
+            return (
+              await useHttp.post(`${endpoint}?type=${type}`, document, {
+                title: document.number,
+                text: `${type} saved successfully`,
+                type: "success",
+              })
+            ).body as DocumentType;
           }
         },
         getAll: async (page: number = 1, perPage: number = 5, sort?: any, filter?: any): Promise<Paginator<Document>> =>

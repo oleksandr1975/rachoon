@@ -53,6 +53,7 @@ onMounted(() => {
               </th>
               <th width="200">Offers</th>
               <th width="200">Invoices</th>
+              <th width="200">Reminders</th>
             </tr>
           </thead>
           <tbody>
@@ -81,6 +82,9 @@ onMounted(() => {
                 <small v-if="c.pendingInvoices > 0" class="text-error text-opacity-50">pending {{ c.pendingInvoices }}</small>
                 &nbsp;
               </td>
+              <td>
+                <NuxtLink :to="`/reminders/client/${c.id}`">{{ c.totalReminders }} Reminders</NuxtLink>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -88,7 +92,7 @@ onMounted(() => {
     </div>
     <div class="mt-10 gap-2 flex justify-center" v-if="controller().hasMore()">
       <span :class="`loading loading-spinner loading-xs ${controller().loading ? '' : 'opacity-0'}`"></span>
-      <button @click="controller().loadMore()" class="btn btn-xs btn-neutral inline-block">Load more</button>
+      <button @click="controller().doLoadMore()" class="btn btn-xs btn-neutral inline-block">Load more</button>
     </div>
   </div>
 </template>

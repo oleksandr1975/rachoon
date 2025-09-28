@@ -1,4 +1,5 @@
 <script setup>
+import Format from "@repo/common/Format";
 const props = defineProps({
   entity: String,
 });
@@ -46,7 +47,7 @@ const entity = useSettings().settings[props.entity];
     <div class="prose">
       <span class="label w-full max-w-xs">Number preview</span>
       <h2 class="m-0 p-0">
-        {{ useSettings().settings.numberFormat(props.entity) }}
+        {{ Format.number(entity.number) }}
       </h2>
     </div>
   </div>

@@ -25,6 +25,13 @@ const isActive = (path: string) => {
       </NuxtLink>
     </li>
     <li>
+      <NuxtLink href="/reminders" :class="isActive('/reminders') ? 'active' : ''">
+        <FaIcon icon="fa-solid fa-file-lines" />
+        Reminders
+      </NuxtLink>
+    </li>
+
+    <li>
       <NuxtLink href="/users" :class="isActive('/users') ? 'active' : ''">
         <FaIcon icon="fa-solid fa-user" />
         Users

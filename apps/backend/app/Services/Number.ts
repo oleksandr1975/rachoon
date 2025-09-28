@@ -13,12 +13,22 @@ export default class Numberervice {
       .withTrashed()
       .getCount()
 
-    const io =
-      type === 'invoice'
-        ? user.organization.settings.invoices.number
-        : user.organization.settings.offers.number
+    let documentNumber: any
+    switch (type) {
+      case 'invoice':
+        documentNumber = user.organization.settings.invoices.number
+        break
+      case 'offer':
+        documentNumber = user.organization.settings.offers.number
+        break
+      case 'reminder':
+        documentNumber = user.organization.settings.reminders.number
+        break
+      default:
+        throw new Error('Type must be invoice, offer or document')
+    }
 
-    return Format.number(io, Number(count))
+    return Format.number(documentNumber, Number(count))
   }
 
   public static async client(user: User) {

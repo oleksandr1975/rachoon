@@ -37,6 +37,7 @@ export type ClientType = {
   updatedAt: Date;
   data: ClientData;
   totalInvoices: number;
+  totalReminders: number;
   pendingInvoices: number;
   totalOffers: number;
   pendingOffers: number;
@@ -63,6 +64,7 @@ class Client implements ClientType {
   totalInvoices: number = 0;
   pendingInvoices: number = 0;
   totalOffers: number = 0;
+  totalReminders: number = 0;
   pendingOffers: number = 0;
   duration: string = "00h:00m";
 

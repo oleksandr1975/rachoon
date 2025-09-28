@@ -13,11 +13,12 @@ export default class Client extends BaseAppModel {
       totalOffers: Number(this.$extras.totalOffers || 0),
       pendingOffers: Number(this.$extras.pendingOffers || 0),
       invoicesTotal: Number(this.$extras.invoicesTotal || 0),
-      minutes: Number(this.$extras.minutes || 0),
+      totalReminders: Number(this.$extras.totalReminders || 0),
     }
   }
   public totalInvoices: number
   public totalOrders: number
+  public totalReminders: number
   public total: number
   public net: number
   @column({ isPrimary: true, serialize: (val) => HashIDs.encode(val) })
@@ -51,6 +52,13 @@ export default class Client extends BaseAppModel {
     },
   })
   public offers: HasMany<typeof Document>
+
+  @hasMany(() => Document, {
+    onQuery: (query) => {
+      return query.where({ type: 'reminder' })
+    },
+  })
+  public reminders: HasMany<typeof Document>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

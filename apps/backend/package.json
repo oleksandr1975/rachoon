@@ -60,6 +60,8 @@
     "@hyzyla/pdfium": "^2.1.9",
     "@repo/common": "workspace:^",
     "adonis-lucid-soft-deletes": "^1.4.3",
+    "cron-parser": "^5.4.0",
+    "cron-schedule": "^5.0.4",
     "date-fns": "^4.1.0",
     "happy-dom": "^18.0.1",
     "hashids": "^2.3.0",
