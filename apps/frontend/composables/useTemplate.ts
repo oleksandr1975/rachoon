@@ -54,4 +54,4 @@ class TemplateStore extends Base<Template> {
   };
 }
 
-export default defineStore("template", () => new TemplateStore("templates", useApi().templates().getAll));
+export default defineStore("template", () => new TemplateStore(ref(new Template()), useApi().templates().getAll));

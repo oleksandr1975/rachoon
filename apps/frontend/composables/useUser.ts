@@ -26,4 +26,4 @@ class UserStore extends Base<User> {
   };
 }
 
-export default defineStore("user", () => new UserStore("users", useApi().users().getAll));
+export default defineStore("user", () => new UserStore(ref(new User()), useApi().users().getAll));

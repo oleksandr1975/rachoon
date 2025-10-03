@@ -2,7 +2,10 @@ import { type IBase } from "@repo/common/Base";
 import type { getAllFunc } from "./useApi";
 
 export default class Base<T extends IBase> {
-  constructor(type: string, getAllFunc: getAllFunc<T>) {
+  constructor(
+    public item: Ref<T>,
+    getAllFunc: getAllFunc<T>,
+  ) {
     this.getAllFunc = getAllFunc;
     watch([computed(() => JSON.stringify(this.sortKeys.value)), computed(() => JSON.stringify(this.filterKeys.value))], () => {
       this.list();
@@ -20,7 +23,6 @@ export default class Base<T extends IBase> {
   };
 
   items: Ref<T[]> = ref([]);
-  item = ref<T>();
   hasErrors = ref(false);
   getAllFunc: getAllFunc<T>;
 

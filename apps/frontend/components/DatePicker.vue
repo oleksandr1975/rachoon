@@ -3,7 +3,6 @@ import VueDatePicker from "@vuepic/vue-datepicker";
 import { endOfMonth, endOfYear, startOfMonth, startOfYear, subMonths, subYears, format } from "date-fns";
 
 const props = defineProps({
-  modelValue: { type: Date, default: Date.now() } | { type: Array, default: [Date.now(), Date.now()] },
   range: Boolean,
   format: String,
   iconOnly: Boolean,
@@ -24,7 +23,8 @@ const presetRanges = ref([
   { label: "This year", range: [startOfYear(new Date()), endOfYear(new Date())] },
   { label: "Last year", range: lastYear },
 ]);
-const date = ref(props.modelValue);
+
+const model = defineModel();
 const emit = defineEmits(["update:modelValue"]);
 function update(date) {
   emit("update:modelValue", date);
@@ -41,7 +41,8 @@ function update(date) {
     calendarCellClassName="!bg-info !bg-opacity-5"
     menuClassName="!bg-info"
     :range="props.range"
-    v-model="date"
+    v-model="model"
+    v-bind="$attrs"
     :preset-ranges="range ? presetRanges : []"
     @update:modelValue="update"
     :format="props.format || 'dd.MM.yyyy'"

@@ -220,4 +220,4 @@ class DocumentStore extends Base<Document> {
   };
 }
 
-export default defineStore("document", () => new DocumentStore("invoice", useApi().documents("invoice").getAll));
+export default defineStore("document", () => new DocumentStore(ref(new Document()), useApi().documents("invoice").getAll));

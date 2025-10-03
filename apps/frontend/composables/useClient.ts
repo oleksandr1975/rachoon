@@ -27,4 +27,4 @@ class ClientStore extends Base<Client> {
   };
 }
 
-export default defineStore("client", () => new ClientStore("clients", useApi().clients().getAll));
+export default defineStore("client", () => new ClientStore(ref(new Client()), useApi().clients().getAll));
