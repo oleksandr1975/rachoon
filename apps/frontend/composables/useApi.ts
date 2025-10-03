@@ -39,7 +39,6 @@ export default function useApi() {
       const op = filter[key].operator.replace("=", "%3D");
       filters.push(`filter[${key}][${op}]=${filter[key].value}`);
     });
-    console.log(filters.join("&"));
     return filters.join("&");
   };
 

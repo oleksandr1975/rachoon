@@ -3,6 +3,7 @@ import Document from 'App/Models/Document'
 import { DocumentValidator } from 'App/Validators/Document'
 import NumberService from 'App/Services/Number'
 import DocumentService from 'App/Services/Document'
+import RecurringInvoice from 'App/Models/RecurringInvoice'
 
 export default class DocumentsController {
   public async index(ctx: HttpContextContract) {
@@ -30,6 +31,7 @@ export default class DocumentsController {
       .preload('client')
       .preload('offer')
       .preload('invoices')
+      .preload('recurringInvoice')
       .withCount('reminders', (query) => query.as('totalReminders'))
       .withScopes((scopes) => scopes.sortBy(ctx, Document.$columnsDefinitions))
       .withScopes((scopes) => scopes.filterBy(ctx, Document.$columnsDefinitions))
@@ -38,20 +40,42 @@ export default class DocumentsController {
 
   public async store(ctx: HttpContextContract) {
     const body = await ctx.request.validate(DocumentValidator)
-    body.number = await NumberService.document(ctx.auth.user!, ctx.request.qs()['type'])
-    return await Document.create({
+    body.number = await NumberService.document(
+      ctx.auth.user!.organizationId,
+      ctx.request.qs()['type']
+    )
+    const document = await Document.create({
       ...body,
       type: ctx.request.qs()['type'].toLowerCase(),
       organizationId: ctx.auth.user?.organizationId,
     })
+
+    if (body.recurringInvoice) {
+      const recurringInvoice = new RecurringInvoice()
+      recurringInvoice.fill(body.recurringInvoice)
+      recurringInvoice.$attributes.organizationId = ctx.auth.user!.organizationId
+      recurringInvoice.$attributes.invoiceId = document.id
+      const r = await recurringInvoice.save()
+    }
+
+    return document
   }
 
   public async update(ctx: HttpContextContract) {
     const d = await Document.query()
       .where({ id: ctx.request.param('id'), organizationId: ctx.auth.user?.organizationId })
       .firstOrFail()
-    d.merge(await ctx.request.validate(DocumentValidator))
+    const body = await ctx.request.validate(DocumentValidator)
+    d.merge(body)
     await d.save()
+    if (body.recurringInvoice) {
+      const recurringInvoice = await RecurringInvoice.query()
+        .where({ id: body.recurringInvoice.id, organizationId: ctx.auth.user!.organizationId })
+        .firstOrFail()
+      recurringInvoice.fill(body.recurringInvoice)
+      await recurringInvoice.save()
+    }
+
     return d
   }
 

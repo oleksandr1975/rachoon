@@ -17,16 +17,16 @@ class DocumentStore extends Base<Document> {
   parentList = this.list;
 
   setTemplate = (id: string) => {
-    this.item.value!.templateId = id;
+    this.item.value.templateId = id;
   };
 
   setClient = (client: ClientType) => {
-    this.item.value!.clientId = client.id;
-    this.item.value!.client = client;
+    this.item.value.clientId = client.id;
+    this.item.value.client = client;
     if (client.data.conditions.discount.value > 0) {
       client.data.conditions.discount.value,
         client.data.conditions.discount.valueType,
-        this.item.value!.addDiscountCharge({
+        this.item.value.addDiscountCharge({
           id: Date.now().toString(),
           title: "Client discount",
           type: "discount",
@@ -35,10 +35,10 @@ class DocumentStore extends Base<Document> {
           amount: 0,
         });
     }
-    if (this.item.value!.data.positions[0].price === null && this.item.value!.data.positions[0].quantity === null) {
-      this.item.value!.removePosition(0);
+    if (this.item.value.data.positions[0].price === null && this.item.value.data.positions[0].quantity === null) {
+      this.item.value.removePosition(0);
     }
-    this.item.value!.rebuild();
+    this.item.value.rebuild();
   };
 
   offerToInvoice = (offer: Document) => {};
@@ -61,10 +61,8 @@ class DocumentStore extends Base<Document> {
 
   save = async () => {
     // super.save();
-    const isNew = this.item.value!.id === "";
-    const ioo = await useApi().documents(this.singularType()).saveOrUpdate(this.item.value!, !isNew);
-    console.log(ioo);
-    if (isNew) {
+    const ioo = await useApi().documents(this.singularType()).saveOrUpdate(this.item.value, !this.isNew());
+    if (this.isNew()) {
       useRouter().replace(`/${this.type()}/${ioo.id}`);
     }
     this.mustSave.value = 0;
@@ -84,7 +82,7 @@ class DocumentStore extends Base<Document> {
   };
 
   updated = () => {
-    this.item.value!.rebuild();
+    this.item.value.rebuild();
     this.mustSave.value++;
   };
 
@@ -131,6 +129,7 @@ class DocumentStore extends Base<Document> {
   };
 
   handleNew = async () => {
+    this.recurring.value = new Recurring();
     this.item.value.number = await useApi().number(this.singularType()).get();
     this.item.value.data.dueDate = dateFns.add(this.item.value.data.date, {
       days: useProfile().me.organization.settings[this.type()].dueDays,
@@ -152,22 +151,27 @@ class DocumentStore extends Base<Document> {
 
     this.item.value = new Document();
     this.item.value.type = this.singularType();
-    if (id === "new") {
+    if (this.isNew()) {
       this.handleNew();
     } else {
       this.item.value = Helpers.merge<Document>(this.item.value, await useApi().documents(this.singularType()).get(id));
+      if (this.item.value.recurringInvoice) {
+        this.recurring.value = this.item.value.recurringInvoice;
+      } else {
+        this.recurring.value = new Recurring();
+      }
     }
 
-    this.item.value!.rebuild();
-    if (!this.item.value!.data.taxOption) {
-      this.item.value!.data.taxOption = useSettings().settings.taxes.options.filter((o) => o.default)[0];
+    this.item.value.rebuild();
+    if (!this.item.value.data.taxOption) {
+      this.item.value.data.taxOption = useSettings().settings.taxes.options.filter((o) => o.default)[0];
     }
     this.mustSave.value = -1;
     this.loading.value = false;
   };
 
   del = async () => {
-    await useApi().documents("invoice-or-offer").delete(this.item.value!.id);
+    await useApi().documents("invoice-or-offer").delete(this.item.value.id);
     useRouter().replace(`/${this.type()}/`);
   };
 
@@ -179,17 +183,17 @@ class DocumentStore extends Base<Document> {
           .documents("offer")
           .get(useRoute().query.offer as string),
       );
-      this.item.value!.removePositions();
+      this.item.value.removePositions();
       this.offerToConvert.value.rebuild();
-      this.item.value!.client = this.offerToConvert.value.client;
-      this.item.value!.clientId = this.offerToConvert.value.clientId;
-      this.item.value!.offerId = this.offerToConvert.value.id;
+      this.item.value.client = this.offerToConvert.value.client;
+      this.item.value.clientId = this.offerToConvert.value.clientId;
+      this.item.value.offerId = this.offerToConvert.value.id;
       if (useRoute().query.option === "partial") {
         this.offerToConvert.value.data.positions.map((p) => {
           if (useRoute().query.valueType === "percent") p.price = (p.price / 100) * Number(useRoute().query.value);
           if (useRoute().query.valueType === "fixed") p.price = ((Number(useRoute().query.value) / 100) * p.totalPercentage) / p.quantity;
           p.price = Math.round(p.price * 100) / 100;
-          this.item.value!.addPosition(p);
+          this.item.value.addPosition(p);
         });
       }
       if (useRoute().query.option === "final") {
@@ -198,17 +202,17 @@ class DocumentStore extends Base<Document> {
         this.offerToConvert.value.data.positions.map((p) => {
           p.price = ((newNet / 100) * p.totalPercentage) / p.quantity;
           p.price = Math.round(p.price * 100) / 100;
-          this.item.value!.addPosition(p);
+          this.item.value.addPosition(p);
         });
       }
 
       if (["full", "final"].includes(useRoute().query.option as string)) {
         this.offerToConvert.value.data.discountsCharges.map((d) => {
-          this.item.value!.addDiscountCharge(d);
+          this.item.value.addDiscountCharge(d);
         });
       }
-      this.item.value!.invoices = this.offerToConvert.value.invoices;
-      this.item.value!.rebuild();
+      this.item.value.invoices = this.offerToConvert.value.invoices;
+      this.item.value.rebuild();
     } else {
       _.mergeWith(this.offerToConvert.value, new Document());
     }

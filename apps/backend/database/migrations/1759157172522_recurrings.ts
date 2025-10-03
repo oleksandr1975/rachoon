@@ -28,6 +28,7 @@ export default class extends BaseSchema {
 
       table.index('start_date')
       table.index('next_run')
+      table.index('active')
       table.unique(['organization_id', 'invoice_id'])
     })
 

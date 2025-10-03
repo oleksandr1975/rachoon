@@ -43,6 +43,7 @@ export default class Base<T extends IBase> {
     }
   }
 
+  isNew = () => (useRoute().params["id"] as string) === "new";
   async save(e: Event) {
     e.preventDefault();
     if (this.item.value!.errors().length > 0) {

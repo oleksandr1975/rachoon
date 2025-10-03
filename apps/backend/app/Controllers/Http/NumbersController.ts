@@ -9,9 +9,9 @@ export default class AuthController {
     }
 
     if (type === 'client') {
-      return NumberService.client(ctx.auth.user!)
+      return NumberService.client(ctx.auth.user!.organizationId)
     }
 
-    return NumberService.document(ctx.auth.user!, type)
+    return NumberService.document(ctx.auth.user!.organizationId, type)
   }
 }

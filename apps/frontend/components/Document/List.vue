@@ -81,11 +81,12 @@ if (props.clientId && props.clientId !== "") {
         <!-- head -->
         <thead>
           <tr>
+            <th width="50"><FaIcon icon="fa-solid fa-repeat" class="ml-1" /></th>
             <th>#</th>
             <th>Client</th>
-            <th>
-              {{ controller().type() === "invoices" ? "Offer" : "Invoiced" }}
-            </th>
+            <!-- <th> -->
+            <!--   {{ controller().type() === "invoices" ? "Offer" : "Invoiced" }} -->
+            <!-- </th> -->
             <th width="50"></th>
             <th>Due Date</th>
             <th>Net</th>
@@ -95,6 +96,14 @@ if (props.clientId && props.clientId !== "") {
         </thead>
         <tbody>
           <tr class="hover" v-for="i in list || controller().items" :key="i.id">
+            <td>
+              <span
+                :class="`btn btn-circle btn-xs ${i.isRecurring ? 'btn-warning' : 'btn-neutral opacity-30'}`"
+                v-if="i.isRecurring || i.isFromRecurring"
+              >
+                <FaIcon icon="fa-solid fa-repeat" />
+              </span>
+            </td>
             <td width="200">
               <NuxtLink :href="'/' + (controller().type() || type) + '/' + i.id" class="link">
                 {{ i.number }}
@@ -106,8 +115,6 @@ if (props.clientId && props.clientId !== "") {
               {{ i.client.name }}
               <br />
               <small class="opacity-50">{{ i.client.number }}</small>
-            </td>
-            <td>
               <span v-if="i.offer.id !== ''" class="text-warning">
                 {{ useFormat.toCurrency(i.offer.data.total) }}
                 <br />
@@ -128,6 +135,9 @@ if (props.clientId && props.clientId !== "") {
               </span>
               <span v-else></span>
             </td>
+            <!-- <td> -->
+
+            <!-- </td> -->
             <td class="text-center">
               <span
                 class="btn btn-circle btn-xs mr-2"

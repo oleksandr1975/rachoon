@@ -33,14 +33,21 @@ export default class Document extends BaseAppModel {
     return isPast(this.data.dueDate)
   }
 
+  @computed()
+  public get isFromRecurring() {
+    return !!this.recurringId
+  }
+
+  @computed()
+  public get isRecurring() {
+    return !!this.recurringInvoice
+  }
+
   @beforeSave()
   public static async calculate(document: Document) {
     const d = new CommonDocument(document.serialize())
     d.calculate()
     document.data = d.data as DocumentData
-    if (d.recurringData.startDate) {
-      d.recurringData.startDate.setHours(0, 0, 0, 0)
-    }
   }
   @column({ isPrimary: true, serialize: (val) => HashIDs.encode(val) })
   public id: number

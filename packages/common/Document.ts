@@ -92,10 +92,10 @@ export type DocumentType = {
   number: string;
   status: string;
   offerId: string | null;
-  recurring: boolean;
-  recurringData: RecurringData;
   invoiceId: string | null;
   templateId: string | null;
+  isRecurring: boolean;
+  isFromRecurring: boolean;
   totalReminders: number;
   offer: DocumentType;
   invoices: DocumentType[];
@@ -103,13 +103,9 @@ export type DocumentType = {
   data: DocumentData;
   createdAt: Date;
   updatedAt: Date;
+  recurringInvoice: RecurringType | null;
   type: string;
 };
-
-export interface RecurringData {
-  cron: string;
-  startDate: Date;
-}
 
 class Document implements DocumentType {
   id: string = "";
@@ -118,14 +114,15 @@ class Document implements DocumentType {
   number: string = "";
   status: string = "pending";
   offerId = null;
-  templateId = "";
+  templateId = null;
   invoiceId = null;
-  recurring = false;
-  recurringData = { startDate: new Date(), cron: "" };
   totalReminders: 0;
+  isRecurring = false;
+  isFromRecurring = false;
   overdue: false;
   offer: DocumentType;
   invoices: DocumentType[];
+  recurringInvoice: RecurringType = null;
   data = {
     title: "",
     positions: [] as Position[],
@@ -156,13 +153,9 @@ class Document implements DocumentType {
       this.invoices = (json.invoices || []).map((i) => new Document(i));
       this.data.date = new Date(Date.parse(json.data.date.toString()));
       this.data.dueDate = new Date(Date.parse(json.data.dueDate.toString()));
-      this.recurringData.startDate = new Date(
-        Date.parse(
-          json.recurringData?.startDate?.toString() || new Date().toString(),
-        ),
-      );
-      // this.createdAt = new Date(Date.parse(json.createdAt.toString()));
-      // this.updatedAt = new Date(Date.parse(json.updatedAt.toString()));
+      if (this.recurringInvoice) {
+        this.recurringInvoice = new Recurring(json.recurringInvoice);
+      }
     }
   }
 

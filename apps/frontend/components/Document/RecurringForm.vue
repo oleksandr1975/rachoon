@@ -45,6 +45,20 @@ watch(
   },
 );
 
+watch(
+  () => controller().recurring.active,
+  () => {
+    if (!controller().isNew()) {
+      return;
+    }
+    if (controller().recurring.active) {
+      controller().item!.recurringInvoice = controller().recurring;
+    } else {
+      controller().item!.recurringInvoice = null;
+    }
+  },
+);
+
 const emit = defineEmits(["close"]);
 </script>
 
