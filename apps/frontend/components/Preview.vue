@@ -16,12 +16,14 @@ async function load() {
 
 <template>
   <Loading v-if="loading" />
-  <div v-else class="text-center">
-    <div v-for="(image, i) in images">
-      <span v-if="!example" class="badge badge-sm mb-2">Page {{ i + 1 }}</span>
-      <img :src="image" class="inline rounded-xl shadow-xl" />
+
+  <div v-else class="carousel">
+    <div v-for="(image, i) in images" class="carousel-item w-full text-center justify-center" :id="`item${i}`" :key="i">
+      <a :href="image" target="_blank"><img :src="image" class="rounded-md inline shadow-xl" /></a>
     </div>
-    <button class="btn btn-xs mt-5" @click="load" v-if="props.example">Refresh</button>
+  </div>
+  <div class="flex justify-center w-full py-2 gap-2">
+    <a v-for="(_, i) in images" :href="`#item${i}`" class="btn btn-xs">{{ i + 1 }}</a>
   </div>
 </template>
 
