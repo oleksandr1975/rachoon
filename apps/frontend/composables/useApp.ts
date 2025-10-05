@@ -2,6 +2,7 @@ class AppStore {
   confirmModal = ref(null);
   confirmResult: Ref<null | boolean> = ref(null);
   confirmQuesion = ref("");
+  previewOpen = ref(false);
 
   confirm = (cb: Function | Promise<any>, question?: string) => {
     if (question) {

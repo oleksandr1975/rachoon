@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const controller = () => useDocument();
+const emit = defineEmits(["close"]);
 </script>
 
 <template>

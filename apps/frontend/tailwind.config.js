@@ -13,14 +13,7 @@ let colors = {
 };
 
 module.exports = {
-  content: [
-    "./**/*.{vue,css,html}",
-    // "./assets/**/*.{vue,js,css,scss}",
-    // "./components/**/*.{vue,js}",
-    // "./layouts/**/*.vue",
-    // "./pages/**/*.vue",
-    // "./plugins/**/*.{js,ts}",
-  ],
+  content: ["./**/*.{vue,css,html}"],
 
   plugins: [require("daisyui"), require("@tailwindcss/typography")],
   theme: {

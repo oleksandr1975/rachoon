@@ -284,3 +284,32 @@ table table td {
 .btn-ghost svg {
   /* @apply text-base-300; */
 }
+
+vfm-fade-enter-active,
+.vfm-fade-leave-active {
+  @apply transition-all duration-200 ease-out;
+}
+
+.vfm-fade-enter-from,
+.vfm-fade-leave-to {
+  @apply opacity-0;
+}
+
+// For the backdrop
+.vfm__overlay {
+  @apply bg-base-300 bg-opacity-30 backdrop-blur-md #{!important};
+
+  &.vfm-fade-enter-from,
+  &.vfm-fade-leave-to {
+    @apply opacity-0;
+  }
+}
+
+.vfm__content {
+  @apply transition-all duration-200 ease-out;
+
+  &.vfm-fade-enter-from,
+  &.vfm-fade-leave-to {
+    @apply scale-90 translate-y-4;
+  }
+}

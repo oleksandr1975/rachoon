@@ -18,7 +18,6 @@ const variables = {
   user: useProfile().me,
 };
 const vars = ref(JSON.stringify(variables, null, 2));
-const previewModal = ref(null);
 </script>
 
 <template>
@@ -27,9 +26,7 @@ const previewModal = ref(null);
     <div>
       <FormHeader title="Template Editor" icon="fa-palette">
         <template #buttons>
-          <label class="btn btn-sm btn-ghost btn-circle" for="preview-modal" @click="previewModal.showModal()">
-            <FaIcon icon="fa-solid fa-eye" />
-          </label>
+          <Preview :templateId="useRoute().params['id'] as string" example="invoice" />
 
           <button type="button" @click="controller().duplicate(controller().item.id)" class="btn btn-sm btn-ghost btn-circle">
             <FaIcon icon="fa-solid fa-copy" />
@@ -44,12 +41,6 @@ const previewModal = ref(null);
           </button>
         </template>
       </FormHeader>
-
-      <dialog ref="previewModal" class="modal">
-        <div class="modal-box">
-          <Preview />
-        </div>
-      </dialog>
 
       <ul v-if="controller().hasErrors" class="border-2 border-warning rounded p-5 mt-5 mb-10">
         <li v-for="e in controller().item.errors()" class="text-warning">

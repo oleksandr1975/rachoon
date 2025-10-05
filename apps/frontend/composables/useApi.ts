@@ -73,7 +73,7 @@ export default function useApi() {
 
     templates: (endpoint: string = "/api/templates") => {
       return {
-        get: async (id: string): Promise<TemplateType> => (await useHttp.get(`${endpoint}/${id}`)).body as TemplateType,
+        get: async (id: string): Promise<TemplateType> => new Template((await useHttp.get(`${endpoint}/${id}`)).body),
         duplicate: async (id: string): Promise<TemplateType> => (await useHttp.get(`${endpoint}/duplicate/${id}`)).body as TemplateType,
         getDefault: async (): Promise<Template> => new Template((await useHttp.get(`${endpoint}/default`)).body),
         getAll: async (page: number = 1, perPage: number = 5, sort?: any, filter?: any): Promise<Paginator<Template>> =>

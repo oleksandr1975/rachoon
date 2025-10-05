@@ -17,7 +17,6 @@ export default class RenderController {
         },
         (query) => query.where({ organizationId: null })
       )
-      .debug(true)
       .firstOrFail()
 
     const preview = ctx.request.qs()['preview'] || false

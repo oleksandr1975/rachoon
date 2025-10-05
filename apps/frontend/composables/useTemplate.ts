@@ -8,9 +8,9 @@ class TemplateStore extends Base<Template> {
 
   save = async (e: Event) => {
     super.save(e);
-    const isNew = this.item.value?.id === "";
-    const c = await useApi().templates().saveOrUpdate(this.item.value!, !isNew);
-    if (isNew) {
+    const c = await useApi().templates().saveOrUpdate(this.item.value!, !this.isNew());
+    this.cached.value[c.id] = c;
+    if (this.isNew()) {
       useRouter().replace(`/${this.type}/${c.id}`);
     }
   };

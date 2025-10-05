@@ -5,11 +5,11 @@ onMounted(() => {
   watch(
     // fixes the problem where old,new values are the same
     [
-      computed(() => JSON.stringify(controller().item?.data.positions)),
-      computed(() => JSON.stringify(controller().item?.data.discountsCharges)),
-      computed(() => JSON.stringify(controller().item?.data.taxOption)),
-      computed(() => JSON.stringify(controller().item?.data.date)),
-      computed(() => JSON.stringify(controller().item?.data.dueDate)),
+      computed(() => JSON.stringify(controller().item.data.positions)),
+      computed(() => JSON.stringify(controller().item.data.discountsCharges)),
+      computed(() => JSON.stringify(controller().item.data.taxOption)),
+      computed(() => JSON.stringify(controller().item.data.date)),
+      computed(() => JSON.stringify(controller().item.data.dueDate)),
     ],
     () => {
       controller().updated();
@@ -25,7 +25,6 @@ async function save() {
   await controller().save();
 }
 
-const previewModal = ref(null);
 const settingsModal = ref(null);
 const recurringModal = ref(null);
 </script>
@@ -43,9 +42,8 @@ const recurringModal = ref(null);
           <FaIcon icon="fa-solid fa-repeat" :class="`${controller().recurring.active ? 'text-success' : ''}`" />
         </label>
 
-        <label class="btn btn-sm btn-ghost btn-circle" for="preview-modal" @click="previewModal.showModal()">
-          <FaIcon icon="fa-solid fa-eye" />
-        </label>
+        <Preview />
+
         <button
           class="btn btn-sm btn-ghost"
           @click="controller().download()"
@@ -79,11 +77,6 @@ const recurringModal = ref(null);
         </button>
       </template>
     </FormHeader>
-    <dialog ref="previewModal" class="modal">
-      <div class="modal-box">
-        <Preview />
-      </div>
-    </dialog>
 
     <dialog ref="settingsModal" class="modal">
       <div class="modal-box">

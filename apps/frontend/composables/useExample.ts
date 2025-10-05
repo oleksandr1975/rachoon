@@ -1,3 +1,4 @@
+import Format from "@repo/common/Format";
 import { Client } from "~~/models/client";
 import { Document } from "~~/models/document";
 
@@ -52,6 +53,7 @@ export default defineStore("example", () => {
   invoice.data.taxOption = {
     title: "Apply taxes",
     applicable: true,
+    default: true,
   };
   invoice.data.discountsCharges = [
     {
@@ -89,6 +91,7 @@ export default defineStore("example", () => {
   offer.data.taxOption = {
     title: "Apply taxes",
     applicable: true,
+    default: true,
   };
   offer.data.discountsCharges = [
     {
@@ -103,13 +106,13 @@ export default defineStore("example", () => {
   offer.client = client;
   offer.calculate();
 
-  async function preview(example: string) {
-    invoice.number = useSettings().settings.numberFormat("invoices");
-    offer.number = useSettings().settings.numberFormat("offers");
+  async function preview(example: string, templateId: string = "") {
+    invoice.number = Format.number(useSettings().settings.invoices.number, 0);
+    offer.number = Format.number(useSettings().settings.offers.number, 0);
 
     const object = example === "invoice" ? invoice : offer;
 
-    return (await useRender(object, true)) as string[];
+    return (await useRender(object, true, templateId)) as string[];
   }
 
   return { invoice, offer, preview };

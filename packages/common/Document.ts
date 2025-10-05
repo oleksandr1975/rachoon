@@ -160,6 +160,7 @@ class Document implements DocumentType {
   }
 
   setTaxOption = (option: TaxOption) => {
+    console.log(option);
     this.data.taxOption = option;
   };
 
