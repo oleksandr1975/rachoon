@@ -24,6 +24,7 @@ export default class TemplatessController {
       .orWhere({ organizationId: null, premium: false })
       .orderBy('organization_id', 'desc')
       .withScopes((scopes) => scopes.sortBy(ctx, Template.$columnsDefinitions))
+      .withScopes((scopes) => scopes.filterBy(ctx, Template.$columnsDefinitions))
       .paginate(ctx.request.qs()['page'] || 1, ctx.request.qs()['perPage'] || 20)
   }
 

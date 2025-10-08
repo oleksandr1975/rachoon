@@ -18,6 +18,7 @@ export default class ClientsController {
       .withCount('reminders', (query) => query.as('totalReminders'))
       .withCount('offers', (query) => query.where({ status: 'pending' }).as('pendingOffers'))
       .withScopes((scopes) => scopes.sortBy(ctx, Client.$columnsDefinitions))
+      .withScopes((scopes) => scopes.filterBy(ctx, Client.$columnsDefinitions))
       .paginate(ctx.request.qs()['page'] || 1, ctx.request.qs()['perPage'] || 20)
   }
 

@@ -45,6 +45,7 @@
   "devDependencies": {
     "@types/node": "^20.12.10",
     "daisyui": "^3.9.4",
-    "sass": "^1.77.0"
+    "sass": "^1.77.0",
+    "vue-good-table-next": "^0.2.2"
   }
 }

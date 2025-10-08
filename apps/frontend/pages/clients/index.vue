@@ -4,5 +4,7 @@ definePageMeta({
 });
 </script>
 <template>
-  <div><ClientList /></div>
+  <div>
+    <ClientList />
+  </div>
 </template>

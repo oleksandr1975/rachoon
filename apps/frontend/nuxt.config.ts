@@ -1,4 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+//
 export default defineNuxtConfig({
   css: ["~/assets/style.scss", "@fortawesome/fontawesome-svg-core/styles.css"],
   devtools: { enabled: true },

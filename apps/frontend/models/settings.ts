@@ -23,6 +23,7 @@ interface SettingsData {
   };
   units: Array<{ title: string; default: boolean }>;
   invoices: {
+    title: String;
     number: {
       format: String;
       padZeros: number;
@@ -30,6 +31,7 @@ interface SettingsData {
     dueDays: number;
   };
   offers: {
+    title: String;
     number: {
       format: String;
       padZeros: number;
@@ -37,6 +39,7 @@ interface SettingsData {
     dueDays: number;
   };
   reminders: {
+    title: String;
     number: {
       format: String;
       padZeros: number;

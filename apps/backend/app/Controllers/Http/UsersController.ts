@@ -7,6 +7,7 @@ export default class UsersController {
     return User.query()
       .where({ organizationId: ctx.auth.user?.organization.id })
       .withScopes((scopes) => scopes.sortBy(ctx, User.$columnsDefinitions))
+      .withScopes((scopes) => scopes.filterBy(ctx, User.$columnsDefinitions))
       .paginate(ctx.request.qs()['page'] || 1, ctx.request.qs()['perPage'] || 20)
   }
 

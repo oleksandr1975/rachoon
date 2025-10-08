@@ -3,6 +3,7 @@ export default class Locale {
   public static messages = {
     'en': {
       'invoice': 'invoice',
+      'reminder': 'reminder',
       'offer': 'offer',
       'number': 'number',
       'no': 'No.',
@@ -27,6 +28,7 @@ export default class Locale {
     },
     'de-AT': {
       'invoice': 'Rechnung',
+      'reminder': 'Mahnung',
       'offer': 'Angebot',
       'number': 'Nummer',
       'no': 'Nr.',
@@ -54,7 +56,7 @@ export default class Locale {
   public static t(loc: string, key: string, ...val: any): string {
     return this.messages[loc]
       ? sprintf(this.messages[loc][key], val || null) ??
-          sprintf(this.messages['en'][key], val || null)
+      sprintf(this.messages['en'][key], val || null)
       : key
   }
 }

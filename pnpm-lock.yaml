@@ -150,6 +150,9 @@ importers:
       '@nuxtjs/tailwindcss':
         specifier: ^6.12.0
         version: 6.12.0
+      '@oruga-ui/oruga-next':
+        specifier: ^0.11.6
+        version: 0.11.6(vue@3.4.27)
       '@pinia/nuxt':
         specifier: ^0.5.1
         version: 0.5.1(vue@3.4.27)
@@ -235,6 +238,9 @@ importers:
       sass:
         specifier: ^1.77.0
         version: 1.77.0
+      vue-good-table-next:
+        specifier: ^0.2.2
+        version: 0.2.2
 
   packages/common:
     dependencies:
@@ -1006,6 +1012,11 @@ packages:
       '@babel/helper-plugin-utils': 7.24.5
       '@babel/plugin-syntax-typescript': 7.24.1(@babel/core@7.24.5)
     dev: false
+
+  /@babel/runtime@7.28.4:
+    resolution: {integrity: sha512-Q/N6JNWvIvPnLDvjlE1OUBLPQHH6l3CltCEsHIujp45zQUSSh8K+gHnaEX45yAT1nyngnINhvWtzN+Nb9D8RAQ==}
+    engines: {node: '>=6.9.0'}
+    dev: true
 
   /@babel/standalone@7.24.5:
     resolution: {integrity: sha512-Sl8oN9bGfRlNUA2jzfzoHEZxFBDliBlwi5mPVCAWKSlBNkXXJOHpu7SDOqjF6mRoTa6GNX/1kAWG3Tr+YQ3N7A==}
@@ -2518,6 +2529,15 @@ packages:
   /@opentelemetry/semantic-conventions@1.24.1:
     resolution: {integrity: sha512-VkliWlS4/+GHLLW7J/rVBA00uXus1SWvwFvcUDxDwmFxYfg/2VI6ekwdXS28cjI8Qz2ky2BzG8OUHo+WeYIWqw==}
     engines: {node: '>=14'}
+    dev: false
+
+  /@oruga-ui/oruga-next@0.11.6(vue@3.4.27):
+    resolution: {integrity: sha512-2ymMckljKlsbe5BtQJoB4XV61PLnPdThpNJWpHjl/KLRQpAOyQK5wbsIr3sTSiYGGrwDt0IDq8bibMkJyh/7ww==}
+    peerDependencies:
+      vue: ^3.0.0
+    dependencies:
+      vue: 3.4.27
+      vue-component-type-helpers: 3.1.1
     dev: false
 
   /@parcel/watcher-android-arm64@2.4.1:
@@ -5903,6 +5923,13 @@ packages:
       is-data-view: 1.0.1
     dev: true
 
+  /date-fns@2.30.0:
+    resolution: {integrity: sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw==}
+    engines: {node: '>=0.11'}
+    dependencies:
+      '@babel/runtime': 7.28.4
+    dev: true
+
   /date-fns@3.6.0:
     resolution: {integrity: sha512-fRHTG8g/Gif+kSh50gaGEdToemgfj74aRX3swtiouboip5JDLAyDE9F11nHMIcvOaXeOC6D7SpNhi7uFyB7Uww==}
     dev: false
@@ -8806,6 +8833,7 @@ packages:
 
   /lodash.isequal@4.5.0:
     resolution: {integrity: sha512-pDo3lu8Jhfjqls6GkMgpahsF9kCyayhgykjyLMNFTKWrpVdAQtYyB4muAMWozBB4ig/dtWAmsMxLEI8wuz+DYQ==}
+    deprecated: This package is deprecated. Use require('node:util').isDeepStrictEqual instead.
     dev: true
 
   /lodash.isplainobject@4.0.6:
@@ -13540,6 +13568,10 @@ packages:
       ufo: 1.5.3
     dev: false
 
+  /vue-component-type-helpers@3.1.1:
+    resolution: {integrity: sha512-B0kHv7qX6E7+kdc5nsaqjdGZ1KwNKSUQDWGy7XkTYT7wFsOpkEyaJ1Vq79TjwrrtuLRgizrTV7PPuC4rRQo+vw==}
+    dev: false
+
   /vue-demi@0.14.10(vue@3.4.27):
     resolution: {integrity: sha512-nMZBOwuzabUO0nLgIcc6rycZEebF6eeUfaiQx9+WSk8e29IbLvPU9feI6tqW4kTo3hvoYAJkMh8n8D0fuISphg==}
     engines: {node: '>=12'}
@@ -13577,6 +13609,13 @@ packages:
   /vue-flow-layout@0.2.0:
     resolution: {integrity: sha512-zKgsWWkXq0xrus7H4Mc+uFs1ESrmdTXlO0YNbR6wMdPaFvosL3fMB8N7uTV308UhGy9UvTrGhIY7mVz9eN+L0Q==}
     dev: false
+
+  /vue-good-table-next@0.2.2:
+    resolution: {integrity: sha512-ts8En2SZEGPPgDs1wLjmZxH4INcEz/V/Bs2e8Y3wktAusWGJvv1cPcl4WQEHoaCtARPNjIuaUywncKbLCJGTog==}
+    dependencies:
+      date-fns: 2.30.0
+      lodash.isequal: 4.5.0
+    dev: true
 
   /vue-observe-visibility@2.0.0-alpha.1(vue@3.4.27):
     resolution: {integrity: sha512-flFbp/gs9pZniXR6fans8smv1kDScJ8RS7rEpMjhVabiKeq7Qz3D9+eGsypncjfIyyU84saU88XZ0zjbD6Gq/g==}
