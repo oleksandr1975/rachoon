@@ -20,7 +20,7 @@ const isDefault = (t: Template) => {
         </NuxtLink>
       </template>
     </FormHeader>
-    <div class="grid grid-cols-7 gap-3 px-10 mt-5">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-3 px-10 mt-5">
       <div
         :class="`${isDefault(t) ? 'bg-base-300' : 'bg-base-100'} shadow-lg min-h-60 py-5 rounded-md shadow-lg`"
         v-for="t in controller().items"

@@ -1,6 +1,10 @@
+<script setup lang="ts">
+const { isOpen } = useDrawer();
+</script>
+
 <template>
   <div class="drawer md:drawer-open">
-    <input id="app-drawer" type="checkbox" class="drawer-toggle" />
+    <input id="app-drawer" type="checkbox" class="drawer-toggle" v-model="isOpen" />
     <div class="drawer-content md:pl-80">
       <slot />
     </div>
