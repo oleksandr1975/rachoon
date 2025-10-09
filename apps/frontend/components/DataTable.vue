@@ -39,16 +39,25 @@ const handleSorted = (field: string) => {
     <div class="absolute bg-base-100 w-full h-full z-10 bg-opacity-50 justify-center backdrop-blur-sm items-center flex" v-if="loading">
       <Loading />
     </div>
-    <table class="table table-compact w-full relative">
+    <table class="table table-compact table-sm w-full relative">
       <thead>
         <tr>
-          <th v-for="column in columns" :key="column.field" :class="column.class">
-            <span :class="`${sortableFields.includes(column.field) ? 'cursor-pointer' : ''}`" @click="handleSorted(column.field)">
-              {{ column.label }}
+          <th
+            v-for="column in columns"
+            :key="column.field"
+            :class="`border-base-200 border-r ${column.class} ${['asc', 'desc'].includes(sorted[column.field]) ? '!bg-base-300' : ''}`"
+          >
+            <span
+              :class="`flex p-0 m-0 w-full justify-between items-center ${sortableFields.includes(column.field) ? 'cursor-pointer' : ''}`"
+              @click="handleSorted(column.field)"
+            >
+              <span>
+                {{ column.label }}
+              </span>
               <FaIcon
                 v-if="sortableFields.includes(column.field)"
                 icon="fa-chevron-down"
-                :class="`ml-1 cursor-pointer  ${sorted[column.field] === 'asc' ? 'rotate-180' : sorted[column.field] === 'desc' ? '' : 'opacity-30'}`"
+                :class="`ml-1 cursor-pointer  ${sorted[column.field] === 'asc' ? 'rotate-180 text-success' : sorted[column.field] === 'desc' ? 'text-success' : 'opacity-30'}`"
               />
             </span>
           </th>

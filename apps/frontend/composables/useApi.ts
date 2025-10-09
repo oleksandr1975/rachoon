@@ -46,8 +46,11 @@ export default function useApi() {
     clients: (endpoint: string = "/api/clients") => {
       return {
         get: async (id: string): Promise<Client> => new Client((await useHttp.get(`${endpoint}/${id}`)).body!),
-        getAll: async (page: number = 1, perPage: number = 5, sort?: any, filter?: any): Promise<Paginator<Client>> =>
-          await paginate<Client>(`${endpoint}?page=${page}&perPage=${perPage}${parseSort(sort)}&${parseFilter(filter)}`, Client),
+        getAll: async (page: number = 1, perPage: number = 5, sort?: any, filter?: any, search?: string): Promise<Paginator<Client>> =>
+          await paginate<Client>(
+            `${endpoint}?page=${page}&perPage=${perPage}${parseSort(sort)}&${parseFilter(filter)}&q=${search}`,
+            Client,
+          ),
         count: async (): Promise<number> => Number((await useHttp.get(`${endpoint}/?count=true`)).body!),
         delete: async (id: string) => (await useHttp.del(`${endpoint}/${id}`)).body,
         saveOrUpdate: async (client: ClientType, update: boolean = false) => {
@@ -76,8 +79,11 @@ export default function useApi() {
         get: async (id: string): Promise<TemplateType> => new Template((await useHttp.get(`${endpoint}/${id}`)).body),
         duplicate: async (id: string): Promise<TemplateType> => (await useHttp.get(`${endpoint}/duplicate/${id}`)).body as TemplateType,
         getDefault: async (): Promise<Template> => new Template((await useHttp.get(`${endpoint}/default`)).body),
-        getAll: async (page: number = 1, perPage: number = 5, sort?: any, filter?: any): Promise<Paginator<Template>> =>
-          await paginate<Template>(`${endpoint}?page=${page}&perPage=${perPage}&${parseSort(sort)}&${parseFilter(filter)}`, Template),
+        getAll: async (page: number = 1, perPage: number = 5, sort?: any, filter?: any, search?: string): Promise<Paginator<Template>> =>
+          await paginate<Template>(
+            `${endpoint}?page=${page}&perPage=${perPage}&${parseSort(sort)}&${parseFilter(filter)}&q=${search}`,
+            Template,
+          ),
 
         // getAll: async (): Promise<Template[]> => ((await useHttp.get(`${endpoint}`)).body as []).map((d) => new Template(d)),
         delete: async (id: string) => (await useHttp.del(`${endpoint}/${id}`)).body,
@@ -100,8 +106,8 @@ export default function useApi() {
       return {
         get: async (id: string): Promise<UserType> => (await useHttp.get(`${endpoint}/${id}`)).body as UserType,
         // getAll: async (): Promise<User[]> => ((await useHttp.get(`${endpoint}`)).body as []).map((d) => new User(d)),
-        getAll: async (page: number = 1, perPage: number = 5, sort?: any, filter?: any): Promise<Paginator<User>> =>
-          await paginate<User>(`${endpoint}?page=${page}&perPage=${perPage}&${parseSort(sort)}&${parseFilter(filter)}`, User),
+        getAll: async (page: number = 1, perPage: number = 5, sort?: any, filter?: any, search?: any): Promise<Paginator<User>> =>
+          await paginate<User>(`${endpoint}?page=${page}&perPage=${perPage}&${parseSort(sort)}&${parseFilter(filter)}&q=${search}`, User),
 
         delete: async (id: string) => (await useHttp.del(`${endpoint}/${id}`)).body,
         saveOrUpdate: async (user: UserType, update: boolean = false) => {
@@ -138,9 +144,9 @@ export default function useApi() {
             ).body as DocumentType;
           }
         },
-        getAll: async (page: number = 1, perPage: number = 5, sort?: any, filter?: any): Promise<Paginator<Document>> =>
+        getAll: async (page: number = 1, perPage: number = 5, sort?: any, filter?: any, search?: string): Promise<Paginator<Document>> =>
           await paginate<Document>(
-            `${endpoint}?type=${type}&page=${page}&perPage=${perPage}&${parseSort(sort)}&${parseFilter(filter)}`,
+            `${endpoint}?type=${type}&page=${page}&perPage=${perPage}&${parseSort(sort)}&${parseFilter(filter)}&q=${search}`,
             Document,
           ),
 

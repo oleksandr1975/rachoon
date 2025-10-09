@@ -1,5 +1,6 @@
 import { type IBase } from "@repo/common/Base";
 import type { getAllFunc } from "./useApi";
+import { useDebounce, useDebounceFn, watchDebounced } from "@vueuse/core";
 
 export default class Base<T extends IBase> {
   constructor(
@@ -34,6 +35,9 @@ export default class Base<T extends IBase> {
   loading = ref(false);
   perPage = ref(20);
   refresh = ref(false);
+  search = ref("");
+  watching = ref(false);
+
   singularType = (firstToUpper: boolean = false) => this.type(firstToUpper).slice(0, this.type(firstToUpper).length - 1);
 
   async filter(key: string, operator: string, value: string) {
@@ -45,6 +49,16 @@ export default class Base<T extends IBase> {
     //   this.filterKeys.value = tmp;
     // }
   }
+
+  watchSearch = () => {
+    watchDebounced(
+      this.search,
+      () => {
+        this.doRefresh();
+      },
+      { debounce: 200 },
+    );
+  };
 
   isNew = () => (useRoute().params["id"] as string) === "new";
   async save(e: Event) {
@@ -68,9 +82,10 @@ export default class Base<T extends IBase> {
   list = async () => {
     if (!this.refresh.value) {
       this.page.value = 1;
+      this.search.value = "";
       this.loading.value = true;
     }
-    const res = await this.getAllFunc(this.page.value, this.perPage.value, this.sortKeys.value, this.filterKeys.value);
+    const res = await this.getAllFunc(this.page.value, this.perPage.value, this.sortKeys.value, this.filterKeys.value, this.search.value);
     this.pages.value = res.pages;
     if (this.loadMore.value) {
       this.items.value = [...this.items.value, ...res.rows];

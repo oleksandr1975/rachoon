@@ -16,17 +16,17 @@ if (props.clientId && props.clientId !== "") {
 } else {
   controller().list();
 }
-
+controller().watchSearch();
 const icons = { offers: "fa-file-contract", invoices: "fa-file-invoice", reminders: "fa-file-lines" };
 
 const columns = [
-  { label: "# Number", field: "number", class: "", width: "180" },
-  { label: "", field: "recurring", class: "" },
-  { label: "Client", field: "client", class: "" },
-  { label: "", field: "status", class: "" },
-  { label: "Due Date", field: "dueDate", class: "" },
-  { label: "Net", field: "net", class: "" },
-  { label: "Total", field: "total", class: "" },
+  { label: "# Number", field: "number", class: "", width: "250" },
+  { label: "", field: "recurring", class: "text-center", width: "60" },
+  { label: "Client", field: "client", class: "", width: "200" },
+  { label: "Status", field: "status", class: "text-center", width: "100" },
+  { label: "Due Date", field: "data.dueDate", class: "", width: "120" },
+  { label: "Net", field: "data.net", class: "", width: "200" },
+  { label: "Total", field: "data.total", class: "", width: "200" },
   { label: "", field: "actions", class: "text-right" },
 ];
 </script>
@@ -35,7 +35,13 @@ const columns = [
   <Loading v-if="controller().loading" />
 
   <div v-else>
-    <FormHeader :title="controller().type(true)" :icon="icons[controller().type() as string]" :divider="false">
+    <FormHeader
+      :title="controller().type(true)"
+      :icon="icons[controller().type() as string]"
+      :divider="false"
+      showSearch
+      v-model="controller().search"
+    >
       <template #buttons>
         <NuxtLink
           class="btn btn-sm btn-neutral gap-2 no-underline"
@@ -79,7 +85,7 @@ const columns = [
       <DataTable
         :columns="columns"
         :rows="list || controller().items"
-        :sortableFields="['number']"
+        :sortableFields="['number', 'data.dueDate', 'data.net', 'data.total', 'status']"
         :loading="controller().refresh || controller().loadMore"
         @doLoadMore="controller().doLoadMore()"
         @sort="(sort) => controller().sort(sort)"
@@ -132,19 +138,19 @@ const columns = [
             <FaIcon :icon="row.status == 'pending' ? 'fa-regular fa-clock' : 'fa-check'" />
           </span>
         </template>
-        <template #dueDate="{ row }">
+        <template #data.dueDate="{ row }">
           <span :class="row.status === 'pending' && datefns.isPast(row.data.dueDate) ? 'text-error' : ''">
             {{ useFormat.date(row.data.dueDate) }}
           </span>
           <br />
           <span class="badge badge-sm badge-neutral" v-if="row.totalReminders > 0">{{ row.totalReminders }} Reminders</span>
         </template>
-        <template #net="{ row }">
+        <template #data.net="{ row }">
           {{ useFormat.toCurrency(row.data.net) }}
           <br />
           &nbsp;
         </template>
-        <template #total="{ row }">
+        <template #data.total="{ row }">
           <span>{{ useFormat.toCurrency(row.data.total) }}</span>
           <br />
           <small class="opacity-50">taxes {{ useFormat.toCurrency(row.data.total - row.data.net) }}</small>

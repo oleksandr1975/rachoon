@@ -3,6 +3,7 @@ const controller = () => useClient();
 
 onMounted(() => {
   controller().list();
+  controller().watchSearch();
 });
 
 const columns = [
@@ -18,7 +19,7 @@ const columns = [
 <template>
   <Loading v-if="controller().loading" />
   <div v-else>
-    <FormHeader title="Clients" icon="fa-user-tie" :divider="false">
+    <FormHeader title="Clients" icon="fa-user-tie" :divider="false" showSearch v-model="controller().search">
       <template #buttons>
         <NuxtLink class="btn btn-sm btn-neutral gap-2 no-underline" href="/clients/new">
           <FaIcon icon="fa-solid fa-plus-circle " />

@@ -10,6 +10,8 @@ export default class Template extends BaseAppModel {
       isGlobal: this.organizationId === null,
     }
   }
+
+  public static indexedFields = ['title']
   public isGlobal: boolean
 
   @column({ isPrimary: true, serialize: (val) => HashIDs.encode(val) })

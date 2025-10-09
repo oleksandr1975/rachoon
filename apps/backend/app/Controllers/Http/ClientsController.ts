@@ -17,8 +17,10 @@ export default class ClientsController {
       .withCount('offers', (query) => query.as('totalOffers'))
       .withCount('reminders', (query) => query.as('totalReminders'))
       .withCount('offers', (query) => query.where({ status: 'pending' }).as('pendingOffers'))
-      .withScopes((scopes) => scopes.sortBy(ctx, Client.$columnsDefinitions))
-      .withScopes((scopes) => scopes.filterBy(ctx, Client.$columnsDefinitions))
+      .withScopes((scopes) => scopes.sortBy(ctx, Client))
+      .withScopes((scopes) => scopes.filterBy(ctx, Client))
+      .withScopes((scopes) => scopes.searchBy(ctx, Client))
+
       .paginate(ctx.request.qs()['page'] || 1, ctx.request.qs()['perPage'] || 20)
   }
 

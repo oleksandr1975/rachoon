@@ -1,10 +1,10 @@
 <script setup lang="ts">
 const controller = () => useUser();
 controller().list();
-
+controller().watchSearch();
 const columns = [
   { label: "", field: "avatar", class: "", width: "60" },
-  { label: "Name", field: "name", class: "" },
+  { label: "Name", field: "data.fullName", class: "" },
   { label: "Email", field: "email", class: "" },
   { label: "Role", field: "role", class: "" },
   { label: "", field: "actions", class: "text-right" },
@@ -15,7 +15,7 @@ const columns = [
   <Loading v-if="controller().loading" />
 
   <div v-else>
-    <FormHeader title="Users" icon="fa-user" :divider="false">
+    <FormHeader title="Users" icon="fa-user" :divider="false" showSearch v-model="controller().search">
       <template #buttons>
         <NuxtLink class="btn btn-sm btn-neutral gap-2 no-underline" href="/users/new">
           <FaIcon icon="fa-solid fa-plus-circle " />
@@ -44,7 +44,7 @@ const columns = [
       <DataTable
         :columns="columns"
         :rows="controller().items"
-        :sortableFields="['email', 'role']"
+        :sortableFields="['email', 'role', 'data.fullName']"
         :showLoadMore="controller().hasMore()"
         @doLoadMore="controller().doLoadMore()"
         @sort="(sort) => controller().sort(sort)"
@@ -58,7 +58,7 @@ const columns = [
             </div>
           </div>
         </template>
-        <template #name="{ row }">
+        <template #data.fullName="{ row }">
           <NuxtLink :href="`/users/${row.id}`" class="link">
             {{ row.data.fullName }}
           </NuxtLink>

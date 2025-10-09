@@ -27,6 +27,7 @@ export default class Document extends BaseAppModel {
   }
 
   public totalReminders: number
+  public static indexedFields = ['number', 'status', 'data.dueDate', 'data.net', 'data.total']
 
   @computed()
   public get overdue() {

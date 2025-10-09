@@ -33,8 +33,9 @@ export default class DocumentsController {
       .preload('invoices')
       .preload('recurringInvoice')
       .withCount('reminders', (query) => query.as('totalReminders'))
-      .withScopes((scopes) => scopes.sortBy(ctx, Document.$columnsDefinitions))
-      .withScopes((scopes) => scopes.filterBy(ctx, Document.$columnsDefinitions))
+      .withScopes((scopes) => scopes.sortBy(ctx, Document))
+      .withScopes((scopes) => scopes.filterBy(ctx, Document))
+      .withScopes((scopes) => scopes.searchBy(ctx, Document))
       .paginate(ctx.request.qs()['page'] || 1, ctx.request.qs()['perPage'] || 20)
   }
 

@@ -10,6 +10,13 @@
     </h3>
 
     <div class="flex gap-2">
+      <input
+        type="text"
+        placeholder="Search…"
+        class="input input-sm input-bordered hidden md:inline-block"
+        v-model="search"
+        v-if="$props.showSearch"
+      />
       <slot name="buttons" />
     </div>
   </div>
@@ -21,5 +28,8 @@ defineProps({
   subtitle: { type: String, required: false, default: "" },
   icon: { type: String, required: false, default: "fa-user" },
   divider: { type: Boolean, required: false, default: true },
+  showSearch: { type: Boolean, required: false, default: false },
 });
+
+const search = defineModel("modelValue", { required: false });
 </script>

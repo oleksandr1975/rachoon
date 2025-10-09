@@ -27,8 +27,6 @@ const { isOpen } = useDrawer();
           <NavigationSettings />
           <div class="divider m-0"></div>
           <NavigationSecondary />
-          <div class="divider m-0"></div>
-          <KBCheatSheet />
         </div>
         <div class="mt-auto mb-5 px-5">
           <NuxtLink href="/profile">

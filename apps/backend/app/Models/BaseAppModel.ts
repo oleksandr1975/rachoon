@@ -8,40 +8,37 @@ export default class BaseAppModel extends compose(BaseModel, SoftDeletes) {
   public page = 1
   public perPage = 20
 
-  private static hiddenFields = ['password', 'organizationId', 'rememberMeToken', 'deletedAt']
+  public static indexedFields: string[] = []
+
   private static operators = ['=', '!=', '<', '<=', '>', '>=', 'like', 'in', 'not in']
 
-  private static fieldInColumns(field: string, columns: Map<string, any>): boolean {
-    if (columns.get(field)) {
-      return true
+  private static getColumnAndProps(field: string) {
+    let column = field
+    let props = ''
+    if (field.includes('.')) {
+      const split = field.split('.')
+      column = split[0]
+      props = split
+        .slice(1)
+        .map((p) => `->>'${p}'`)
+        .join('')
     }
-    for (const [_, value] of columns.entries()) {
-      if (value['columnName'] === field) {
-        return true
-      }
-    }
-    return false
+
+    return [column, props]
   }
 
-  private static allowedFilds(columns: Map<string, any>): string[] {
-    const fields: string[] = []
-    for (const [key, _] of columns.entries()) {
-      if (this.hiddenFields.includes(key)) continue
-      fields.push(key)
-    }
-    return fields
-  }
-
-  public static sortBy = scope((query, ctx: HttpContextContract, columns: Map<string, any>) =>
+  public static sortBy = scope((query, ctx: HttpContextContract, model: typeof BaseAppModel) =>
     query.if(
       ctx.request.qs()['sort'],
       (query) => {
         const sort = ctx.request.qs()['sort']
         if (typeof sort !== 'object') return
         for (const field in sort) {
-          if (!this.fieldInColumns(field, columns))
+          const [column, props] = this.getColumnAndProps(field)
+
+          if (!model.indexedFields.includes(field) && !field.includes('.'))
             throw new Exception(
-              `Invalid sort field: ${field}. Allowed fields are [${this.allowedFilds(columns).join(
+              `Invalid sort field: ${field}. Allowed fields are [${model.indexedFields.join(
                 ', '
               )}]`,
               400
@@ -50,7 +47,11 @@ export default class BaseAppModel extends compose(BaseModel, SoftDeletes) {
           if (!order || !['asc', 'desc'].includes(order.toLowerCase())) {
             order = 'asc'
           }
-          query.orderBy(field, order)
+          if (props !== '') {
+            query.orderByRaw(`${column}${props} ${order}`)
+          } else {
+            query.orderBy(field, order)
+          }
         }
       },
       //default sort
@@ -58,19 +59,36 @@ export default class BaseAppModel extends compose(BaseModel, SoftDeletes) {
     )
   )
 
-  public static filterBy = scope((query, ctx: HttpContextContract, columns: Map<string, any>) =>
+  public static searchBy = scope((query, ctx: HttpContextContract, model: typeof BaseAppModel) =>
+    query.if(ctx.request.qs()['q'] && ctx.request.qs()['q'] !== '', (query) => {
+      query.andWhere((q) => {
+        const fields = model.indexedFields || []
+        for (const field of fields) {
+          const [column, props] = this.getColumnAndProps(field)
+          if (props !== '') {
+            q.orWhereRaw(`${column}${props} ILIKE ?`, [`%${ctx.request.qs()['q']}%`])
+          } else {
+            q.orWhereRaw(`LOWER(${column}) like ?`, [`%${ctx.request.qs()['q'].toLowerCase()}%`])
+          }
+        }
+      })
+    })
+  )
+
+  public static filterBy = scope((query, ctx: HttpContextContract, model: typeof BaseAppModel) =>
     query.if(ctx.request.qs()['filter'], (query) => {
       //TODO: throw validation errors
       const filter = ctx.request.qs()['filter']
       if (typeof filter !== 'object')
         throw new Exception('Invalid filter format. Use filter[field][operator]=value', 400)
       for (const field in filter) {
+        // const [column, props] = this.getColumnAndProps(field)
         const f = filter[field]
         if (typeof f !== 'object')
           throw new Exception('Invalid filter format. Use filter[field][operator]=value', 400)
-        if (!this.fieldInColumns(field, columns))
+        if (!model.indexedFields.includes(field))
           throw new Exception(
-            `Invalid filter field: ${field}. Allowed fields are [${this.allowedFilds(columns).join(
+            `Invalid filter field: ${field}. Allowed fields are [${model.indexedFields.join(
               ', '
             )}]`,
             400

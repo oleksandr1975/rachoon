@@ -20,11 +20,17 @@ export default class TemplatessController {
 
   public async index(ctx: HttpContextContract) {
     return await Template.query()
-      .where({ organizationId: ctx.auth.user?.organizationId })
-      .orWhere({ organizationId: null, premium: false })
+      .andWhere((q) => {
+        q.where({ organizationId: ctx.auth.user?.organizationId }).orWhere({
+          organizationId: null,
+          premium: false,
+        })
+      })
       .orderBy('organization_id', 'desc')
-      .withScopes((scopes) => scopes.sortBy(ctx, Template.$columnsDefinitions))
-      .withScopes((scopes) => scopes.filterBy(ctx, Template.$columnsDefinitions))
+      .withScopes((scopes) => scopes.sortBy(ctx, Template))
+      .withScopes((scopes) => scopes.filterBy(ctx, Template))
+      .withScopes((scopes) => scopes.searchBy(ctx, Template))
+
       .paginate(ctx.request.qs()['page'] || 1, ctx.request.qs()['perPage'] || 20)
   }
 

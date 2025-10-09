@@ -2,6 +2,7 @@
 import type { Template } from "~/models/template";
 const controller = () => useTemplate();
 controller().list();
+controller().watchSearch();
 
 const isDefault = (t: Template) => {
   const orgHasDefaultTemplate = controller().items.filter((t) => !t.isGlobal && t.default).length > 0;
@@ -12,7 +13,7 @@ const isDefault = (t: Template) => {
 <template>
   <Loading v-if="controller().loading" />
   <div v-else>
-    <FormHeader title="Templates" icon="fa-palette">
+    <FormHeader title="Templates" icon="fa-palette" showSearch v-model="controller().search">
       <template #buttons>
         <NuxtLink class="btn btn-sm btn-neutral gap-2 no-underline" href="/templates/new">
           <FaIcon icon="fa-solid fa-plus-circle " />

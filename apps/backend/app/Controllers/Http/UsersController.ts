@@ -6,8 +6,10 @@ export default class UsersController {
   public async index(ctx: HttpContextContract) {
     return User.query()
       .where({ organizationId: ctx.auth.user?.organization.id })
-      .withScopes((scopes) => scopes.sortBy(ctx, User.$columnsDefinitions))
-      .withScopes((scopes) => scopes.filterBy(ctx, User.$columnsDefinitions))
+      .withScopes((scopes) => scopes.sortBy(ctx, User))
+      .withScopes((scopes) => scopes.filterBy(ctx, User))
+      .withScopes((scopes) => scopes.searchBy(ctx, User))
+
       .paginate(ctx.request.qs()['page'] || 1, ctx.request.qs()['perPage'] || 20)
   }
 
