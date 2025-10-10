@@ -6,9 +6,7 @@ RUN apk add --no-cache --update nodejs npm graphicsmagick ghostscript caddy
 
 
 WORKDIR /app
-RUN npm install -g pnpm@latest
-COPY package.json .
-RUN pnpm install
+RUN npm install -g pnpm@latest nuxt@3
 COPY . .
 RUN pnpm install
 RUN pnpm run build
