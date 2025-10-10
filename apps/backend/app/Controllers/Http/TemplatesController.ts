@@ -88,6 +88,8 @@ export default class TemplatessController {
         organizationId: ctx.auth.user?.organizationId,
         default: true,
       })
+      .orWhere({ organizationId: null, premium: false, default: true })
+
       .firstOrFail()
   }
 

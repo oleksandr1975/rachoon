@@ -61,8 +61,6 @@ export default class DashboardController {
       .select(Database.raw(`sum((data->>'net')::float) as net`))
       .first()
 
-    console.log(reminderAmounts?.$extras)
-
     return {
       invoices: {
         net: invoiceAmounts?.$extras.net,

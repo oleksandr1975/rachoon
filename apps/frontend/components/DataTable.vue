@@ -35,7 +35,14 @@ const handleSorted = (field: string) => {
 </script>
 
 <template>
-  <div class="relative">
+  <div v-if="rows.length === 0" class="prose min-h-lvh flex justify-center items-center opacity-50">
+    <div class="text-center">
+      <FaIcon icon="fa-solid fa-paw" class="text-6xl mb-4 opacity-25 animate-pulse rotate-12" />
+      <h1>Nothing to show!</h1>
+      <p>It's empty.</p>
+    </div>
+  </div>
+  <div v-else class="relative">
     <div class="absolute bg-base-100 w-full h-full z-10 bg-opacity-50 justify-center backdrop-blur-sm items-center flex" v-if="loading">
       <Loading />
     </div>

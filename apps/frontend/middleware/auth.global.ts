@@ -18,18 +18,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
     useProfile().me.organization.data.address.city === "" &&
     useProfile().me.organization.data.address.country === ""
   ) {
-    const { $toast } = useNuxtApp();
-
-    $toast(
-      `<div class="text-sm"><div><strong>Hey, ${useProfile().me.data.username}</strong></div><div>Please setup your organiztion settings first before proceeding</div></div>`,
-      {
-        theme: "auto",
-        type: "error",
-        position: "bottom-right",
-        dangerouslyHTMLString: true,
-      },
-    );
-
-    return navigateTo("/settings");
+    useToast(`Hey, ${useProfile().me.data.username}`, "Please setup your organiztion address first before proceeding.", "warning");
+    return useRouter().replace("/settings/organization");
   }
 });

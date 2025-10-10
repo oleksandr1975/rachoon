@@ -15,13 +15,13 @@ export default defineStore("signup", () => {
     slug: null,
   });
 
-  const slug = ref(null);
+  const slug = ref("your-slug");
 
   watch(organization.value, () => {
     if (organization.value.slug) {
       slug.value = organization.value.slug;
     } else {
-      slug.value = slugify(organization.value.name, { lower: true });
+      slug.value = slugify(organization.value.name || "", { lower: true });
     }
   });
 

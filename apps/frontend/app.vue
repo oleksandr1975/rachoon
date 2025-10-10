@@ -7,7 +7,7 @@ useApp().shortcuts();
 </script>
 
 <template>
-  <div v-if="useProfile().loading === true">Loading</div>
+  <div v-if="useProfile().loading" class="h-svh items-center flex justify-center"><Loading /></div>
   <div id="app" data-theme="rachoon" v-else>
     <AppConfirm />
     <KBCheatSheet />

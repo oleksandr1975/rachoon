@@ -1,45 +1,31 @@
-export default defineStore("auth", () => {
-  const loginEmailPassword = async (email: string, password: string) => {
-    const res = (await useHttp.post("/api/auth", {
-      email,
-      password,
-    })) as { token: string };
+class AuthStore {
+  key = () => localStorage.getItem("auth-token");
+  loading = ref(false);
+  loadingLogin = ref(false);
+  org = ref(null);
 
-    if (res?.token) {
-      localStorage.setItem("auth-token", res.token);
-      await useProfile().init();
-      navigateTo("");
-    }
+  init = async () => {
+    this.loading.value = true;
+    this.org.value = await useApi().organization().getCurrent();
+    this.loading.value = false;
   };
 
-  const key = () => localStorage.getItem("auth-token");
+  loginEmailPassword = async (email: string, password: string) => {
+    this.loadingLogin.value = true;
+    const res = await useApi().auth().loginEmailPassword(email, password);
+    if (res.token) {
+      localStorage.setItem("auth-token", res.token);
+      await useProfile().init();
+      useRouter().replace("/");
+    }
+    this.loadingLogin.value = false;
+  };
 
-  const logout = async () => {
-    await useHttp.del("/api/auth/me");
+  logout = async () => {
+    await useApi().auth().logout(useProfile().me.id);
     localStorage.removeItem("auth-token");
     navigateTo("login");
   };
+}
 
-  const logo = ref("");
-  const loading = ref(false);
-
-  const org = ref(null);
-
-  async function init() {
-    loading.value = true;
-    org.value = await useApi().organization().getCurrent();
-    // if (org.logo) {
-    //   logo.value = org.logo;
-    // }
-    loading.value = false;
-  }
-
-  return {
-    loginEmailPassword,
-    logout,
-    key,
-    init,
-    loading,
-    org,
-  };
-});
+export default defineStore("auth", () => new AuthStore());

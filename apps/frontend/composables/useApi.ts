@@ -213,6 +213,13 @@ export default function useApi() {
         get: async () => new Dashboard((await useHttp.get("/api/dashboard")).body),
       };
     },
+    auth: (endpoint: string = "/api/auth") => {
+      return {
+        loginEmailPassword: async (email: string, password: string) =>
+          (await useHttp.post(endpoint, { email: email, password: password })).body as { token?: string },
+        logout: async (id: string) => (await useHttp.del(`${endpoint}/${id}`)).body,
+      };
+    },
     render: async (html: string, preview: boolean = false): Promise<string[] | string> => {
       const res = (await useHttp.post(`/api/render${preview ? "?preview=true" : ""}`, {
         html: html,

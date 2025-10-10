@@ -27,19 +27,6 @@ const columns = [
         </NuxtLink>
       </template>
     </FormHeader>
-    <div class="text-center mt-20" v-if="controller().items.length === 0">
-      <div class="prose">
-        <FaIcon icon="fa-users" class="text-5xl" />
-        <h1 class="mt-5">No clients</h1>
-        <p>
-          It appears you have
-          <strong>no clients</strong>
-          created. Go ahead and
-          <NuxtLink href="/clients/new">create one</NuxtLink>
-          .
-        </p>
-      </div>
-    </div>
     <DataTable
       :columns="columns"
       :rows="useClient().items"

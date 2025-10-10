@@ -3,6 +3,13 @@ import { ClientType } from "./Client";
 import _ from "lodash";
 import Helpers from "./Helpers";
 
+export enum DocumentStatus {
+  Draft = 0,
+  Pending = 1,
+  Paid = 2,
+  Overdue = 3,
+}
+
 export interface RecurringType {
   id: string;
   cron: string;
