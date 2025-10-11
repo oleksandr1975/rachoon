@@ -29,7 +29,7 @@ class UserValidator {
         whereNot: { id: this.ctx.request.param('id') },
       }),
     ]),
-    role: schema.enum(['admin', 'user']),
+    role: schema.number(),
     password: this.ctx.request.param('id') ? schema.string.optional() : schema.string(),
     data: schema.object().members({
       fullName: schema.string(),
