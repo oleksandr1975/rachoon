@@ -8,7 +8,9 @@ export default class BaseAppModel extends compose(BaseModel, SoftDeletes) {
   public page = 1
   public perPage = 20
 
-  public static indexedFields: string[] = []
+  public static searchFields: string[] = []
+  public static sortFields: string[] = []
+  public static filterFields: string[] = []
 
   private static operators = ['=', '!=', '<', '<=', '>', '>=', 'like', 'in', 'not in']
 
@@ -36,7 +38,7 @@ export default class BaseAppModel extends compose(BaseModel, SoftDeletes) {
         for (const field in sort) {
           const [column, props] = this.getColumnAndProps(field)
 
-          if (!model.indexedFields.includes(field) && !field.includes('.'))
+          if (!model.sortFields.includes(field) && !field.includes('.'))
             throw new Exception(
               `Invalid sort field: ${field}. Allowed fields are [${model.indexedFields.join(
                 ', '
@@ -62,7 +64,7 @@ export default class BaseAppModel extends compose(BaseModel, SoftDeletes) {
   public static searchBy = scope((query, ctx: HttpContextContract, model: typeof BaseAppModel) =>
     query.if(ctx.request.qs()['q'] && ctx.request.qs()['q'] !== '', (query) => {
       query.andWhere((q) => {
-        const fields = model.indexedFields || []
+        const fields = model.searchFields || []
         for (const field of fields) {
           const [column, props] = this.getColumnAndProps(field)
           if (props !== '') {
@@ -86,7 +88,7 @@ export default class BaseAppModel extends compose(BaseModel, SoftDeletes) {
         const f = filter[field]
         if (typeof f !== 'object')
           throw new Exception('Invalid filter format. Use filter[field][operator]=value', 400)
-        if (!model.indexedFields.includes(field))
+        if (!model.filterFields.includes(field))
           throw new Exception(
             `Invalid filter field: ${field}. Allowed fields are [${model.indexedFields.join(
               ', '

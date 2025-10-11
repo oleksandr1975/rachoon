@@ -6,7 +6,8 @@ import Document from './Document'
 import BaseAppModel from './BaseAppModel'
 
 export default class Client extends BaseAppModel {
-  public static indexedFields = ['name', 'number']
+  public static searchFields = ['name', 'number']
+  public static sortFields = ['name', 'number']
   public serializeExtras() {
     return {
       totalInvoices: Number(this.$extras.totalInvoices || 0),

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { UserRole } from "@repo/common/User";
+
 const controller = () => useUser();
 controller().list();
 controller().watchSearch();
@@ -47,6 +49,13 @@ const columns = [
         </NuxtLink>
         <br />
         <small class="opacity-50">last modified {{ useFormat.date(row.updatedAt) }}</small>
+      </template>
+      <template #role="{ row }">
+        <span
+          :class="`badge badge-sm ${row.role === UserRole.ADMIN ? 'badge-primary' : row.role === UserRole.VIEWER ? 'badge-secondary' : 'badge-accent'}`"
+        >
+          {{ UserRole[row.role] }}
+        </span>
       </template>
       <template #actions="{ row }">
         <ContextMenu>

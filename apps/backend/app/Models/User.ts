@@ -13,7 +13,8 @@ export default class User extends BaseAppModel {
     }
   }
 
-  public static indexedFields = ['email', 'role', 'data.fullName', 'data.username']
+  public static searchFields = ['email', 'data.fullName', 'data.username']
+  public static sortFields = ['email', 'role', 'data.fullName', 'data.username']
 
   @column({ isPrimary: true, serialize: (val) => HashIDs.encode(val) })
   public id: number

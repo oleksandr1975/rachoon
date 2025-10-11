@@ -11,7 +11,8 @@ export default class Template extends BaseAppModel {
     }
   }
 
-  public static indexedFields = ['title']
+  public static searchFields = ['title']
+  public static sortFields = ['title']
   public isGlobal: boolean
 
   @column({ isPrimary: true, serialize: (val) => HashIDs.encode(val) })
