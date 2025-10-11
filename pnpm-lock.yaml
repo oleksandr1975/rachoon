@@ -41,6 +41,9 @@ importers:
       adonis-lucid-soft-deletes:
         specifier: ^1.4.3
         version: 1.4.4
+      base-x:
+        specifier: ^5.0.1
+        version: 5.0.1
       cron-parser:
         specifier: ^5.4.0
         version: 5.4.0
@@ -53,9 +56,6 @@ importers:
       date-fns:
         specifier: ^4.1.0
         version: 4.1.0
-      hashids:
-        specifier: ^2.3.0
-        version: 2.3.0
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -89,6 +89,9 @@ importers:
       sprintf-js:
         specifier: ^1.1.3
         version: 1.1.3
+      sqids:
+        specifier: ^0.3.0
+        version: 0.3.0
     devDependencies:
       '@adonisjs/assembler':
         specifier: ^5.9.5
@@ -1040,7 +1043,7 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       '@babel/code-frame': 7.27.1
-      '@babel/parser': 7.27.7
+      '@babel/parser': 7.28.4
       '@babel/types': 7.28.4
     dev: false
 
@@ -1068,7 +1071,7 @@ packages:
     dependencies:
       '@babel/code-frame': 7.27.1
       '@babel/generator': 7.28.3
-      '@babel/parser': 7.27.7
+      '@babel/parser': 7.28.4
       '@babel/template': 7.27.2
       '@babel/types': 7.28.4
       debug: 4.4.3
@@ -5032,6 +5035,10 @@ packages:
     dev: false
     optional: true
 
+  /base-x@5.0.1:
+    resolution: {integrity: sha512-M7uio8Zt++eg3jPj+rHMfCC+IuygQHHCOU+IYsVtik6FWjuYpVt/+MRKcgsAMHh8mMFAwnB+Bs+mTrFiXjMzKg==}
+    dev: false
+
   /base64-js@1.5.1:
     resolution: {integrity: sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==}
 
@@ -7752,10 +7759,6 @@ packages:
 
   /hash-sum@2.0.0:
     resolution: {integrity: sha512-WdZTbAByD+pHfl/g9QSsBIIwy8IT+EsPiKDs0KNX+zSHhdDLFKdZu0BQHljvO+0QI/BasbMSUa8wYNCZTvhslg==}
-    dev: false
-
-  /hashids@2.3.0:
-    resolution: {integrity: sha512-ljM73TE/avEhNnazxaj0Dw3BbEUuLC5yYCQ9RSkSUcT4ZSU6ZebdKCIBJ+xT/DnSYW36E9k82GH1Q6MydSIosQ==}
     dev: false
 
   /hasown@2.0.0:
@@ -12334,6 +12337,10 @@ packages:
 
   /sprintf-js@1.1.3:
     resolution: {integrity: sha512-Oo+0REFV59/rz3gfJNKQiBlwfHaSESl1pcGyABQsnnIfWOFt6JNj5gCog2U6MLZ//IGYD+nA8nI+mTShREReaA==}
+    dev: false
+
+  /sqids@0.3.0:
+    resolution: {integrity: sha512-lOQK1ucVg+W6n3FhRwwSeUijxe93b51Bfz5PMRMihVf1iVkl82ePQG7V5vwrhzB11v0NtsR25PSZRGiSomJaJw==}
     dev: false
 
   /ssri@10.0.6:
