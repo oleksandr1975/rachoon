@@ -9,21 +9,10 @@ interface UserData {
   avatar: string;
 }
 
-type UserType = {
-  id: string;
-  createdAt: Date;
-  updatedAt: Date;
-  email: string;
-  data: UserData;
-  password: string;
-  minutes: number;
-  role: UserRole;
-};
-
-class User implements UserType, IBase {
-  id: string = null;
+class User implements IBase {
+  id: string | null = null;
   role: UserRole = UserRole.VIEWER;
-  password: string = null;
+  password: string | null = null;
   createdAt: Date = new Date();
   updatedAt: Date = new Date();
   email: string = "";
@@ -62,4 +51,4 @@ class User implements UserType, IBase {
 }
 
 export { User };
-export type { UserData, UserType };
+export type { UserData };

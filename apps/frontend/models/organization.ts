@@ -1,5 +1,4 @@
 import { Settings } from "~~/models/settings";
-import { SettingsData } from "./settings";
 import _ from "lodash";
 
 interface OrganizationData {
@@ -21,17 +20,7 @@ interface OrganizationData {
   };
 }
 
-type OrganizationType = {
-  id: string;
-  name: string;
-  slug: string;
-  createdAt: Date;
-  updatedAt: Date;
-  data: OrganizationData;
-  settings: SettingsData;
-};
-
-class Organization implements OrganizationType {
+class Organization {
   id: string = "";
   createdAt: Date = new Date();
   updatedAt: Date = new Date();
@@ -61,4 +50,4 @@ class Organization implements OrganizationType {
 }
 
 export { Organization };
-export type { OrganizationData, OrganizationType };
+export type { OrganizationData };

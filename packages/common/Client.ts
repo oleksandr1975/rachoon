@@ -30,21 +30,7 @@ export interface ClientData {
   };
 }
 
-export type ClientType = {
-  id: string;
-  name: string;
-  number: string;
-  createdAt: Date;
-  updatedAt: Date;
-  data: ClientData;
-  totalInvoices: number;
-  totalReminders: number;
-  pendingInvoices: number;
-  totalOffers: number;
-  pendingOffers: number;
-};
-
-class Client implements ClientType {
+class Client {
   id: string = "";
   name: string = "";
   number: string = "";
@@ -69,7 +55,7 @@ class Client implements ClientType {
   pendingOffers: number = 0;
   duration: string = "00h:00m";
 
-  public constructor(json?: ClientType) {
+  public constructor(json?: any) {
     if (json) {
       Helpers.merge(this, json);
       if (json.updatedAt && json.createdAt) {

@@ -1,9 +1,9 @@
 import { Dashboard } from "~~/models/dashboard";
-import { Client, type ClientType } from "~~/models/client";
+import { Client } from "~~/models/client";
 import { Document, DocumentStatus, DocumentType } from "~~/models/document";
-import { type OrganizationType } from "~~/models/organization";
-import { User, type UserType } from "~~/models/user";
-import { Template, type TemplateType } from "~/models/template";
+import { Organization } from "~~/models/organization";
+import { User } from "~~/models/user";
+import { Template } from "~/models/template";
 import Paginator from "~/models/paginator";
 
 export type getAllFunc<T> = (page: number, perPage: number, sort?: any, filter?: any) => Promise<Paginator<T>>;
@@ -76,8 +76,8 @@ export default function useApi() {
 
     templates: (endpoint: string = "/api/templates") => {
       return {
-        get: async (id: string): Promise<TemplateType> => new Template((await useHttp.get(`${endpoint}/${id}`)).body),
-        duplicate: async (id: string): Promise<TemplateType> => (await useHttp.get(`${endpoint}/duplicate/${id}`)).body as TemplateType,
+        get: async (id: string): Promise<Template> => new Template((await useHttp.get(`${endpoint}/${id}`)).body),
+        duplicate: async (id: string): Promise<Template> => new Template((await useHttp.get(`${endpoint}/duplicate/${id}`)).body),
         getDefault: async (): Promise<Template> => new Template((await useHttp.get(`${endpoint}/default`)).body),
         getAll: async (
           page: number = 1,
@@ -93,16 +93,16 @@ export default function useApi() {
 
         // getAll: async (): Promise<Template[]> => ((await useHttp.get(`${endpoint}`)).body as []).map((d) => new Template(d)),
         delete: async (id: string) => (await useHttp.del(`${endpoint}/${id}`)).body,
-        saveOrUpdate: async (template: TemplateType, update: boolean = false) => {
+        saveOrUpdate: async (template: Template, update: boolean = false) => {
           const notif = {
             title: template.title,
             text: "Template saved successfully",
             type: "success",
           };
           if (update) {
-            return (await useHttp.put(`${endpoint}/${template.id}`, template, notif)).body;
+            return new Template((await useHttp.put(`${endpoint}/${template.id}`, template, notif)).body);
           } else {
-            return (await useHttp.post(`${endpoint}`, template, notif)).body as TemplateType;
+            return new Template((await useHttp.post(`${endpoint}`, template, notif)).body);
           }
         },
       };
@@ -110,22 +110,22 @@ export default function useApi() {
 
     users: (endpoint: string = "/api/users") => {
       return {
-        get: async (id: string): Promise<UserType> => (await useHttp.get(`${endpoint}/${id}`)).body as UserType,
+        get: async (id: string): Promise<User> => new User((await useHttp.get(`${endpoint}/${id}`)).body),
         // getAll: async (): Promise<User[]> => ((await useHttp.get(`${endpoint}`)).body as []).map((d) => new User(d)),
         getAll: async (page: number = 1, perPage: number = 5, sort?: any, filter?: any, search: string = ""): Promise<Paginator<User>> =>
           await paginate<User>(`${endpoint}?page=${page}&perPage=${perPage}&${parseSort(sort)}&${parseFilter(filter)}&q=${search}`, User),
 
         delete: async (id: string) => (await useHttp.del(`${endpoint}/${id}`)).body,
-        saveOrUpdate: async (user: UserType, update: boolean = false) => {
+        saveOrUpdate: async (user: User, update: boolean = false) => {
           const notif = {
             title: user.data.fullName,
             text: "User saved successfully",
             type: "success",
           };
           if (update) {
-            return (await useHttp.put(`${endpoint}/${user.id}`, user, notif)).body;
+            return new User((await useHttp.put(`${endpoint}/${user.id}`, user, notif)).body);
           } else {
-            return (await useHttp.post(`${endpoint}`, user, notif)).body as UserType;
+            return new User((await useHttp.post(`${endpoint}`, user, notif)).body);
           }
         },
       };
@@ -141,13 +141,15 @@ export default function useApi() {
             });
             return document;
           } else {
-            return (
-              await useHttp.post(`${endpoint}?type=${type}`, document, {
-                title: document.number,
-                text: `${DocumentType[type]} saved successfully`,
-                type: "success",
-              })
-            ).body;
+            return new Document(
+              (
+                await useHttp.post(`${endpoint}?type=${type}`, document, {
+                  title: document.number,
+                  text: `${DocumentType[type]} saved successfully`,
+                  type: "success",
+                })
+              ).body,
+            );
           }
         },
         getAll: async (
@@ -180,24 +182,32 @@ export default function useApi() {
     organization: (endpoint: string = "/api/organizations") => {
       return {
         getCurrent: async (slug: string = "") => (await useHttp.get(`/api${slug !== "" ? `?slug=${slug}` : ""}`, false)).body,
-        save: async (organization: OrganizationType) =>
-          await useHttp.post(endpoint, organization, {
-            title: "Settings",
-            text: "Successfully saved",
-            type: "success",
-          }),
+        save: async (organization: Organization) =>
+          new Organization(
+            (
+              await useHttp.post(endpoint, organization, {
+                title: "Settings",
+                text: "Successfully saved",
+                type: "success",
+              })
+            ).body,
+          ),
       };
     },
     profile: (endpoint: string = "/api/profile") => {
       return {
         get: async () => new User((await useHttp.get(endpoint)).body),
-        save: async (user: UserType) =>
-          useHttp.post(endpoint, user, {
-            title: "Save profile",
-            text: "Profile saved successfully",
-          }),
+        save: async (user: User) =>
+          new User(
+            (
+              await useHttp.post(endpoint, user, {
+                title: "Save profile",
+                text: "Profile saved successfully",
+              })
+            ).body,
+          ),
         savePassword: async (password: string) =>
-          useHttp.post(
+          await useHttp.post(
             `${endpoint}?pwOnly=true`,
             { password: password },
             {

@@ -25,20 +25,7 @@ interface TemplateData {
   };
 }
 
-export type TemplateType = {
-  id: string;
-  title: string;
-  html: string;
-  createdAt: Date;
-  updatedAt: Date;
-  data: TemplateData;
-  thumbnail: string;
-  default: boolean;
-  premium: boolean;
-  isGlobal: boolean;
-};
-
-class Template implements TemplateType {
+class Template {
   id: string = "";
   title: string = "";
   createdAt: Date = new Date();
@@ -74,7 +61,7 @@ class Template implements TemplateType {
   default: boolean = false;
   premium: boolean = false;
 
-  public constructor(json?: TemplateType) {
+  public constructor(json?: any) {
     if (json) {
       Helpers.merge(this, json);
       if (json.updatedAt && json.createdAt) {

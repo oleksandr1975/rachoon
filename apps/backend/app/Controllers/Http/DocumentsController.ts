@@ -4,7 +4,6 @@ import { DocumentValidator } from 'App/Validators/Document'
 import NumberService from 'App/Services/Number'
 import DocumentService from 'App/Services/Document'
 import RecurringInvoice from 'App/Models/RecurringInvoice'
-import { DocumentType } from '@repo/common/Document'
 
 export default class DocumentsController {
   public async index(ctx: HttpContextContract) {

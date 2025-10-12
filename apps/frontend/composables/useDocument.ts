@@ -1,4 +1,4 @@
-import { Client, type ClientType } from "~~/models/client";
+import { Client } from "~~/models/client";
 import { DCType, Document, DocumentStatus, DocumentType, Recurring, ValueType, type TaxOption, ConvertOption } from "~~/models/document";
 import Helpers from "@repo/common/Helpers";
 import { DateTime } from "luxon";
@@ -31,7 +31,7 @@ class DocumentStore extends Base<Document> {
     this.item.value.templateId = id;
   };
 
-  setClient = (client: ClientType) => {
+  setClient = (client: Client) => {
     this.item.value.clientId = client.id;
     this.item.value.client = client;
     if (client.data.conditions.discount.value > 0) {
