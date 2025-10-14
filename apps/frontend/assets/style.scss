@@ -351,3 +351,10 @@ vfm-fade-enter-active,
 tooltip:before {
   @apply bg-base-100;
 }
+
+.header {
+  @apply fixed top-0 left-0 lg:left-80 right-0 z-50 bg-base-200 border-b border-base-300 shadow-lg shadow-black/30;
+  + * {
+    @apply pt-14;
+  }
+}

@@ -3,7 +3,7 @@ const { isOpen } = useDrawer();
 </script>
 
 <template>
-  <div class="drawer md:drawer-open">
+  <div class="drawer lg:drawer-open">
     <input id="app-drawer" type="checkbox" class="drawer-toggle" v-model="isOpen" />
     <div class="drawer-content md:pl-80">
       <slot />
