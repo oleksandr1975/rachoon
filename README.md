@@ -1,81 +1,77 @@
-# Turborepo starter
+<div align="center">
+<img src="https://raw.githubusercontent.com/ad-on-is/rachoon/main/apps/frontend/assets/logo.png" height="100" />
+</div>
 
-This is an official starter Turborepo.
+# Rachoon — The Clever Way to Handle Invoices
 
-## Using this example
+**Rachoon** (from _račun_, meaning _invoice_ in Bosnian) is a modern, self-hosted invoicing platform designed for freelancers, small
+businesses, and everyone who wants full control over their billing. It helps you create and track invoices effortlessly — with the charm of its mascot, the ever-curious raccoon.
 
-Run the following command:
+---
 
-```sh
-npx create-turbo@latest
+![Dashboard](https://raw.githubusercontent.com/ad-on-is/rachoon/main/.github/screenshots/dashboard.png)
+
+---
+
+## Features
+
+✅ **Invoices & Offers** — Create and manage invoices and quotations in seconds.  
+✅ **Client Management** — Keep all your client info organized and searchable.  
+✅ **Payment Tracking** — Log payment status, view balances, and track overdue invoices.  
+✅ **Custom Branding** — Highly customizable templates using nunjucks.  
+✅ **Multi-Currency & Tax Support** — Bill globally with flexible tax and currency settings.  
+✅ **PDF Export** — Instantly download professional-looking PDFs.  
+✅ **Dashboard Insights** — Get a snapshot of your revenue, pending payments, and client stats.
+
+---
+
+## Screenshots
+
+- [Invoice Management](https://raw.githubusercontent.com/ad-on-is/rachoon/main/.github/screenshots/invoices.png)
+- [Invoice Creation](https://raw.githubusercontent.com/ad-on-is/rachoon/main/.github/screenshots/create-invoice.png)
+- [Client Management](https://raw.githubusercontent.com/ad-on-is/rachoon/main/.github/screenshots/clients.png)
+- [Settings](https://raw.githubusercontent.com/ad-on-is/rachoon/main/.github/screenshots/settings2.png)
+- [Template Creation](https://raw.githubusercontent.com/ad-on-is/rachoon/main/.github/screenshots/template.png)
+
+---
+
+## 🦝 Why "Rachoon"?
+
+The name comes from “račun”, which means invoice in Bosnian — combined with the word raccoon, because invoicing should be smart and quick.
+
+---
+
+## Tech Stack
+
+- **Frontend:** Nuxt.js
+- **Backend:** adonisJS
+- **Database:** PostgreSQL
+- **PDF Engine:** Gotenberg
+- **Deployment:** Docker-ready, runs anywhere.
+
+---
+
+## Installation
+
+```yaml
+services:
+  rachoon:
+    image: ghcr.io/ad-on-is/rachoon
+    container_name: rachoon
+    environment:
+      - HOST=0.0.0.0
+      - APP_KEY=<some-app-key>
+      - DRIVE_DISK=local
+      - DB_CONNECTION=pg
+      - GOTENBERG_URL=http://gotenberg
+      - PG_HOST=<pg-host>
+      - PG_PORT=5432
+      - PG_USER=<pg-user>
+      - PG_PASSWORD=<pg-password>
+      - PG_DB_NAME=<pg-database>
+      - BASE_URL=https://rachoon.dnmc.in
+
+  gotenberg:
+    image: gotenberg/gotenberg:8
+    restart: always
 ```
-
-## What's inside?
-
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm build
-```
-
-### Develop
-
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm dev
-```
-
-### Remote Caching
-
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-npx turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)

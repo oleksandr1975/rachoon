@@ -4,7 +4,7 @@ useHead({
 });
 await useInfo().init();
 await useProfile().init();
-useApp().shortcuts();
+// useApp().shortcuts();
 </script>
 
 <template>

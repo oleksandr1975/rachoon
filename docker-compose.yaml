@@ -1,0 +1,20 @@
+services:
+  rachoon:
+    image: ghcr.io/ad-on-is/rachoon
+    container_name: rachoon
+    environment:
+      - HOST=0.0.0.0
+      - APP_KEY=<some-app-key>
+      - DRIVE_DISK=local
+      - DB_CONNECTION=pg
+      - GOTENBERG_URL=http://gotenberg
+      - PG_HOST=<pg-host>
+      - PG_PORT=5432
+      - PG_USER=<pg-user>
+      - PG_PASSWORD=<pg-password>
+      - PG_DB_NAME=<pg-database>
+      - BASE_URL=https://rachoon.dnmc.in
+
+  gotenberg:
+    image: gotenberg/gotenberg:8
+    restart: always
