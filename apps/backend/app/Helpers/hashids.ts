@@ -3,7 +3,7 @@ import Sqids from 'sqids'
 const alphababet =
   process.env.ALPHABET || 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
 export default class HashIDs {
-  public static encode(val: number) {
+  public static encode(val: number | null) {
     if (val === null) {
       return null
     }
@@ -14,7 +14,7 @@ export default class HashIDs {
     return hids.encode([val])
   }
 
-  public static decode(val: string) {
+  public static decode(val: string | null) {
     if (val === null || val === 'null') {
       return null
     }
