@@ -65,7 +65,7 @@ services:
       - APP_KEY=<some-app-key>
       - DRIVE_DISK=local
       - DB_CONNECTION=pg
-      - GOTENBERG_URL=http://gotenberg
+      - GOTENBERG_URL=http://gotenberg:3000
       - PG_HOST=<pg-host>
       - PG_PORT=5432
       - PG_USER=<pg-user>
