@@ -58,24 +58,27 @@ services:
   rachoon:
     image: ghcr.io/ad-on-is/rachoon
     container_name: rachoon
-    ports:
-      - 8080:8080
     environment:
-      - HOST=0.0.0.0
       - APP_KEY=<some-app-key>
-      - DRIVE_DISK=local
       - DB_CONNECTION=pg
-      - GOTENBERG_URL=http://gotenberg
-      - PG_HOST=<pg-host>
+      - GOTENBERG_URL=http://gotenberg:3000
+      - PG_HOST=postgres16
       - PG_PORT=5432
-      - PG_USER=<pg-user>
-      - PG_PASSWORD=<pg-password>
-      - PG_DB_NAME=<pg-database>
-      - BASE_URL=http://localhost:8080
+      - PG_USER=<root-user>
+      - PG_PASSWORD=<root-password>
+      - PG_DB_NAME=rachoon
 
   gotenberg:
     image: gotenberg/gotenberg:8
-    restart: always
+
+  postgres16:
+    container_name: postgres16
+    image: postgres:16
+    environment:
+      - POSTGRES_USER=<root-user>
+      - POSTGRES_PASSWORD=<root-password>
+    volumes:
+      - ./rachoon-data:/var/lib/postgresql/data
 ```
 
 ## First steps
